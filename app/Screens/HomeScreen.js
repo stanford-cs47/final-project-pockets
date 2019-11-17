@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import {
   StyleSheet,
@@ -39,6 +39,9 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
+        <TouchableOpacity onPress={() => this.props.navigation.push('Profile')}>
+          <Text>Profile</Text>
+        </TouchableOpacity>
         <FlatList
           data={[{id: '0', title: 'CLICK ME'}]}
           renderItem={({item}) => (
