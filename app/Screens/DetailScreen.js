@@ -25,6 +25,32 @@ const doActivity = (activity, navigation) => {
   }
 };
 
+// adds activity id to list of id's that user no longer wants to see
+const blackList = async activityId => {
+  try {
+    const user = firebase.auth().currentUser;
+    let userRef = firestore.doc('users/' + user.uid);
+    console.log('activity to blacklsit: ', activityId);
+    let userInfo = await userRef.get();
+
+    if (userInfo.exists) {
+      if (userInfo.data().blacklist) {
+        // get blacklist and add current value
+        let blacklist = userInfo.data().blacklist;
+        console.log('blacklist exists:', blacklist);
+        blacklist.push(activityId);
+        userRef.set({blacklist: blacklist}, {merge: true});
+      } else {
+        // make new blacklist and add current value
+        let blacklist = [activityId];
+        userRef.set({blacklist: blacklist}, {merge: true});
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const DetailScreen = props => {
   const {navigation} = props;
 
@@ -48,7 +74,14 @@ const DetailScreen = props => {
             <Text style={{fontSize: 20}}>
               Are you sure you no longer want to see this activity suggestion?
             </Text>
-            <Button title="Yes" />
+            <Button
+              title="Yes"
+              onPress={() => {
+                blackList(activity.id);
+                setModalOpen(false);
+                navigation.navigate('Home');
+              }}
+            />
             <Button
               title="No"
               onPress={() => {

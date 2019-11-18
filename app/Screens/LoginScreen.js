@@ -53,22 +53,17 @@ export default class LoginScreen extends React.Component {
         const user = firebase.auth().currentUser;
         var userDocRef = firestore.doc('users/' + user.uid);
 
-        // Since my document doesn't exist, userDocRef.set will
-        // create the document for me
+        // creates new user document
         userDocRef.set({
           name: this.state.signUpName,
         });
-        // this.props.updateStatus();
 
-        // var activitiesRef = firestore.collection(
-        //   'users/' + user.uid + '/activities',
-        // );
-        DefaultActivities.forEach(async act => {
-          let actRef = firestore.doc(
-            'users/' + user.uid + '/activities/' + act.id,
-          );
-          await actRef.set(act);
-        });
+        // Reloads activities from default activities - delete collection on firebase and do this when we want to change/add things
+        // let activitiesCollRef = firestore.collection('/activities');
+        // DefaultActivities.forEach(async act => {
+        //   let newActRef = activitiesCollRef.doc();
+        //   newActRef.set(act);
+        // });
       }
     } catch (err) {
       console.log(err);

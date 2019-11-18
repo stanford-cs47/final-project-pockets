@@ -32,7 +32,8 @@ class HomeScreen extends React.Component {
       'users/' + user.uid + '/activities',
     );
     let currActRef = firestore.doc('users/' + user.uid);
-    // Updates activities in real time
+
+    // Updates activities and current activity in real time
     let unsubscribeActivities = activitiesRef.onSnapshot(() => {
       this.reloadActivities();
     });
@@ -62,15 +63,22 @@ class HomeScreen extends React.Component {
       const user = firebase.auth().currentUser;
       let activities = [];
 
-      let activityCollRef = firestore.collection(
-        'users/' + user.uid + '/activities',
-      );
+      let activityCollRef = firestore.collection('/activities');
       let allActivities = await activityCollRef.get();
       allActivities.forEach(activity => {
-        activities.push(activity.data());
+        let newActivity = activity.data();
+        newActivity.id = activity.id;
+        activities.push(newActivity);
       });
 
-      return activities ? activities : [];
+      // TODO: get the actual user's blacklist instead
+      let blacklist = ['0VdclitGuf5VJa38JB1I', 'uFRTKbSu7kYMtbPGMM0D'];
+
+      let filtered = activities.filter(function(e) {
+        return this.indexOf(e.id) < 0;
+      }, blacklist);
+
+      return filtered ? filtered : [];
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +98,9 @@ class HomeScreen extends React.Component {
       let userRef = firestore.doc('users/' + user.uid);
       let userInfo = await userRef.get();
       if (userInfo.exists) {
-        return userInfo.data().currActivity.title;
+        if (userInfo.data().currActivity) {
+          return userInfo.data().currActivity.title;
+        }
       } else {
         return null;
       }
