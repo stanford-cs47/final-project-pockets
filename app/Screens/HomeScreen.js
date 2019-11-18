@@ -101,7 +101,7 @@ class HomeScreen extends React.Component {
     return (
       <SafeAreaView>
         <TouchableOpacity onPress={() => this.props.navigation.push('Profile')}>
-          <Text>Profile</Text>
+          <Text>Profile (click me)</Text>
         </TouchableOpacity>
         <Text>{currActivity}</Text>
         <FlatList
