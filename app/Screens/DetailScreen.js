@@ -10,8 +10,21 @@ import {
   View,
   Button,
 } from 'react-native';
+import firebase from 'firebase';
 
-import DontShowModal from '../Components/DontShowModal';
+import firestore from '../../firebase';
+
+const doActivity = (activity, navigation) => {
+  // console.log('doActivity props', activity);
+  const user = firebase.auth().currentUser;
+  var userDocRef = firestore.doc('users/' + user.uid);
+  userDocRef.set({currentActivity: activity}, {merge: true});
+
+  if (activity.link != null) {
+    // open page with link
+    navigation.navigate('WebActivity', {activity: activity});
+  }
+};
 
 const DetailScreen = props => {
   const {navigation} = props;
@@ -47,7 +60,9 @@ const DetailScreen = props => {
           </View>
         </View>
       </Modal>
+
       <Text style={styles.activityText}>{activity.title}</Text>
+
       <Image
         source={
           activity.img == null ? require('../Images/pocket.png') : activity.img
@@ -55,9 +70,14 @@ const DetailScreen = props => {
         style={styles.image}
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          doActivity(activity, navigation);
+        }}>
         <Text style={styles.buttonText}>Sounds good</Text>
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() => {
           setModalOpen(true);

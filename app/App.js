@@ -10,6 +10,7 @@ import HomeScreen from './Screens/HomeScreen';
 import DetailScreen from './Screens/DetailScreen';
 import LoginScreen from './Screens/LoginScreen';
 import ProfileScreen from './Screens/ProfileScreen';
+import WebActivityScreen from './Screens/WebActivityScreen';
 
 const styles = StyleSheet.create({
   header: {
@@ -22,6 +23,7 @@ const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
     Detail: DetailScreen,
+    WebActivity: WebActivityScreen,
     Profile: ProfileScreen,
   },
   {

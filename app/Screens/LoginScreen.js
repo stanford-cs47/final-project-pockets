@@ -11,7 +11,6 @@ import {material} from 'react-native-typography';
 import firestore from '../../firebase';
 import firebase from 'firebase';
 import DefaultActivities from '../Activities/DefaultActivities';
-import defaultActivites from '../Activities/DefaultActivities';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -64,7 +63,7 @@ export default class LoginScreen extends React.Component {
         // var activitiesRef = firestore.collection(
         //   'users/' + user.uid + '/activities',
         // );
-        defaultActivites.forEach(async act => {
+        DefaultActivities.forEach(async act => {
           console.log('adding activity ', act.title);
           let actRef = firestore.doc(
             'users/' + user.uid + '/activities/' + act.id,
@@ -94,10 +93,12 @@ export default class LoginScreen extends React.Component {
     }
   };
 
+  // TODO: give error messages for login
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <TextInput
+          autoCapitalize="none"
           autoCorrect={false}
           style={styles.input}
           value={this.state.signUpName}
@@ -105,6 +106,7 @@ export default class LoginScreen extends React.Component {
           placeholder="Name"
         />
         <TextInput
+          autoCapitalize="none"
           autoCorrect={false}
           style={styles.input}
           value={this.state.signUpEmail}
@@ -112,6 +114,7 @@ export default class LoginScreen extends React.Component {
           placeholder="Email"
         />
         <TextInput
+          autoCapitalize="none"
           autoCorrect={false}
           style={styles.input}
           value={this.state.signUpPassword}
@@ -122,6 +125,7 @@ export default class LoginScreen extends React.Component {
         <Button title="Sign Up" onPress={() => this.signUp()} color="#ffa000" />
 
         <TextInput
+          autoCapitalize="none"
           autoCorrect={false}
           style={[styles.input, {marginTop: 50}]}
           value={this.state.loginEmail}
@@ -129,6 +133,7 @@ export default class LoginScreen extends React.Component {
           placeholder="Email"
         />
         <TextInput
+          autoCapitalize="none"
           autoCorrect={false}
           style={styles.input}
           value={this.state.loginPassword}
