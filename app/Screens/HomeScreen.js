@@ -1,39 +1,9 @@
 import * as React from 'react';
 
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  View,
-  Text,
-} from 'react-native';
+import defaultActivites from '../Activities/DefaultActivities';
+import Tile from '../Components/ActivityTile';
 
-const styles = StyleSheet.create({
-  tile: {
-    width: '50%',
-    aspectRatio: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#00F',
-  },
-  tileTitle: {
-    fontSize: 18,
-  },
-});
-
-class Tile extends React.Component {
-  render() {
-    const {title, navigation} = this.props;
-    return (
-      <TouchableOpacity onPress={() => navigation.push('Detail')}>
-        <View style={styles.tile}>
-          <Text style={styles.tileTitle}>{title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
+import {SafeAreaView, FlatList, TouchableOpacity, Text} from 'react-native';
 
 class HomeScreen extends React.Component {
   render() {
@@ -43,9 +13,10 @@ class HomeScreen extends React.Component {
           <Text>Profile</Text>
         </TouchableOpacity>
         <FlatList
-          data={[{id: '0', title: 'CLICK ME'}]}
+          data={defaultActivites}
+          numColumns={2}
           renderItem={({item}) => (
-            <Tile navigation={this.props.navigation} title={item.title} />
+            <Tile navigation={this.props.navigation} activity={item} />
           )}
           keyExtractor={item => item.id}
         />

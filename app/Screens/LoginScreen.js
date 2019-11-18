@@ -10,6 +10,8 @@ import {
 import {material} from 'react-native-typography';
 import firestore from '../../firebase';
 import firebase from 'firebase';
+import DefaultActivities from '../Activities/DefaultActivities';
+import defaultActivites from '../Activities/DefaultActivities';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -57,7 +59,18 @@ export default class LoginScreen extends React.Component {
         userDocRef.set({
           name: this.state.signUpName,
         });
-        this.props.updateStatus();
+        // this.props.updateStatus();
+
+        // var activitiesRef = firestore.collection(
+        //   'users/' + user.uid + '/activities',
+        // );
+        defaultActivites.forEach(async act => {
+          console.log('adding activity ', act.title);
+          let actRef = firestore.doc(
+            'users/' + user.uid + '/activities/' + act.id,
+          );
+          await actRef.set(act);
+        });
       }
     } catch (err) {
       console.log(err);
