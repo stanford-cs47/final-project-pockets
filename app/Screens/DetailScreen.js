@@ -15,10 +15,9 @@ import firebase from 'firebase';
 import firestore from '../../firebase';
 
 const doActivity = (activity, navigation) => {
-  // console.log('doActivity props', activity);
   const user = firebase.auth().currentUser;
   var userDocRef = firestore.doc('users/' + user.uid);
-  userDocRef.set({currentActivity: activity}, {merge: true});
+  userDocRef.set({currActivity: activity}, {merge: true});
 
   if (activity.link != null) {
     // open page with link
@@ -30,7 +29,6 @@ const DetailScreen = props => {
   const {navigation} = props;
 
   const [modalOpen, setModalOpen] = React.useState(false);
-  console.log(modalOpen);
 
   // TODO: error handling if there is no object passed through for an activity
   const activity = JSON.parse(

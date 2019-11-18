@@ -64,7 +64,6 @@ export default class LoginScreen extends React.Component {
         //   'users/' + user.uid + '/activities',
         // );
         DefaultActivities.forEach(async act => {
-          console.log('adding activity ', act.title);
           let actRef = firestore.doc(
             'users/' + user.uid + '/activities/' + act.id,
           );

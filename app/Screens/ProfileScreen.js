@@ -5,8 +5,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 const ProfileScreen = () => {
   const signOut = async () => {
     try {
-      const response = await firebase.auth().signOut();
-      console.log(response);
+      await firebase.auth().signOut();
     } catch (err) {
       console.log(err);
     }

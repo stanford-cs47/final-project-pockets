@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
 export default class Tile extends React.Component {
   render() {
     const {activity, navigation} = this.props;
-    // console.log(activity.title);
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('Detail', {activity: activity})}
