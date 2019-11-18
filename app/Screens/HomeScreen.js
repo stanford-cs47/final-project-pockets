@@ -22,7 +22,8 @@ class HomeScreen extends React.Component {
     activities: [],
     currActivity: null,
     isRefreshing: false,
-    unsubscribe: null,
+    unsubscribeActivities: null,
+    unsubscribeCurrAct: null,
   };
 
   componentDidMount() {
@@ -30,19 +31,24 @@ class HomeScreen extends React.Component {
     let activitiesRef = firestore.collection(
       'users/' + user.uid + '/activities',
     );
+    let currActRef = firestore.doc('users/' + user.uid);
     // Updates activities in real time
-    let unsubscribe = activitiesRef.onSnapshot(() => {
+    let unsubscribeActivities = activitiesRef.onSnapshot(() => {
       this.reloadActivities();
     });
 
-    this.setState({unsubscribe});
+    let unsubscribeCurrAct = currActRef.onSnapshot(() => {
+      this.reloadCurrActivity();
+    });
+
+    this.setState({unsubscribeActivities, unsubscribeCurrAct});
 
     this.reloadActivities();
     this.reloadCurrActivity();
   }
 
   componentWillUnmount() {
-    this.state.unsubscribe();
+    this.state.unsubscribeActivities();
   }
 
   reloadActivities = async () => {
