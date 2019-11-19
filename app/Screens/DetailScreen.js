@@ -22,6 +22,9 @@ const doActivity = (activity, navigation) => {
   if (activity.link != null) {
     // open page with link
     navigation.navigate('WebActivity', {activity: activity});
+    // TODO: make it navigate back to home when they back out of the webview
+  } else {
+    navigation.navigate('Home');
   }
 };
 

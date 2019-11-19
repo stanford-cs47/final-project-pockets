@@ -34,6 +34,18 @@ let defaultActivites = [
     img: null,
     link: 'https://www.boatloadpuzzles.com/playcrossword',
   },
+  {
+    title: 'Write a to-do list',
+    type: 'productivity',
+    img: null,
+    link: null,
+  },
+  {
+    title: 'Do a facemask',
+    type: 'health',
+    img: null,
+    link: null,
+  },
 ];
 
 export default defaultActivites;

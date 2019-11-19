@@ -60,10 +60,11 @@ class HomeScreen extends React.Component {
 
   getActivities = async () => {
     try {
-      const user = firebase.auth().currentUser;
+      // const user = firebase.auth().currentUser;
       let activities = [];
 
       let activityCollRef = firestore.collection('/activities');
+      // TODO: get an added activity on firebase to show up without refreshing?
       let allActivities = await activityCollRef.get();
       allActivities.forEach(activity => {
         let newActivity = activity.data();
