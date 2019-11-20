@@ -124,7 +124,12 @@ class HomeScreen extends React.Component {
     return (
       <>
         <SafeAreaView>
-          {currActivity !== null && <Text>{currActivity}</Text>}
+          {currActivity !== null && (
+            <Text
+              style={{
+                marginLeft: '5%',
+              }}>{`Currently selected: ${currActivity}`}</Text>
+          )}
         </SafeAreaView>
         <FlatList
           data={this.state.activities}
