@@ -1,10 +1,12 @@
 import * as React from 'react';
 
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import firebase from 'firebase';
+import DropdownAlert from 'react-native-dropdownalert';
+import DropDownHolder from './Components/DropdownHolder';
 
 import HomeScreen from './Screens/HomeScreen';
 import DetailScreen from './Screens/DetailScreen';
@@ -67,7 +69,35 @@ class App extends React.Component {
 
   render() {
     if (this.state.loggedIn) {
-      return <AppContainer />;
+      return (
+        <View style={{width: '100%', height: '100%'}}>
+          <AppContainer />
+          <DropdownAlert
+            ref={ref => DropDownHolder.setDropDown(ref)}
+            showCancel={true}
+            // // Restyles cancel button
+            // cancelBtnImageStyle={{
+            //   padding: 8,
+            //   width: 30,
+            //   height: 30,
+            //   alignSelf: 'center',
+            // }}
+
+            // TODO: style dropdown alert
+            // use this: https://github.com/testshallpass/react-native-dropdownalert/blob/master/docs/PROPS.md
+            containerStyle={{
+              padding: 16,
+              flexDirection: 'row',
+              backgroundColor: '#202020',
+            }}
+            contentContainerStyle={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          />
+        </View>
+      );
     } else {
       return <LoginScreen />;
     }

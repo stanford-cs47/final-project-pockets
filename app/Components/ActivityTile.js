@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity, View, Image, Text} from 'react-native';
 
 const getBgColor = activity => {
   if (activity.type === 'health') {
+<<<<<<< HEAD
     return '#A9DEF9'; // BLUE
   } else if (activity.type === 'fun') {
     return '#FFE6A7'; // YELLOW
@@ -27,6 +28,17 @@ const getColor = activity => {
     return '#125518'; // GREEN
   } else {
     return '#772485'; // PURPLE
+=======
+    return '#18e6ed';
+  } else if (activity.type === 'fun') {
+    return '#fcba03';
+  } else if (activity.type === 'edu') {
+    return '#ff5724';
+  } else if (activity.type === 'productivity') {
+    return '#b5e38a';
+  } else {
+    return '#d273f5';
+>>>>>>> c1a95a1df03decf21651e6f9921b49e8c5f92e3f
   }
 };
 
