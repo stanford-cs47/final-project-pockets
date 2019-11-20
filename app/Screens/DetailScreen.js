@@ -106,8 +106,11 @@ const DetailScreen = props => {
 
       <Image
         source={
-          activity.img == null ? require('../Images/pocket.png') : activity.img
+          activity.img == null
+            ? require('../Images/pocket.png')
+            : {uri: activity.img}
         }
+        // source={require('../Images/pocket.png')}
         style={styles.image}
       />
 

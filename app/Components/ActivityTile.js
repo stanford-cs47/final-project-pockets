@@ -44,6 +44,19 @@ export default class Tile extends React.Component {
               source={require('../Images/Delete.png')}
             />
           </TouchableOpacity>
+          <Image
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              marginBottom: 20,
+            }}
+            source={
+              activity.img
+                ? {uri: activity.img}
+                : require('../Images/pocket.png')
+            }
+          />
           <Text style={[styles.tileTitle, {color: getColor(activity)}]}>
             {activity.title}
           </Text>
