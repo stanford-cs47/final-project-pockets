@@ -1,19 +1,32 @@
 import * as React from 'react';
 
-import {StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Image, Text} from 'react-native';
 
-// TODO: make colors look good lol
 const getBgColor = activity => {
   if (activity.type === 'health') {
-    return 'blue';
+    return '#A9DEF9'; // BLUE
   } else if (activity.type === 'fun') {
-    return 'orange';
+    return '#FFE6A7'; // YELLOW
   } else if (activity.type === 'edu') {
-    return 'red';
+    return '#F8C0C8'; // RED
   } else if (activity.type === 'productivity') {
-    return 'green';
+    return '#D0F4DE'; // GREEN
   } else {
-    return 'black';
+    return '#DBB1E2'; // PURPLE
+  }
+};
+
+const getColor = activity => {
+  if (activity.type === 'health') {
+    return '#024663'; // BLUE
+  } else if (activity.type === 'fun') {
+    return '#7A7330'; // YELLOW
+  } else if (activity.type === 'edu') {
+    return '#C34A76'; // RED
+  } else if (activity.type === 'productivity') {
+    return '#125518'; // GREEN
+  } else {
+    return '#772485'; // PURPLE
   }
 };
 
@@ -22,27 +35,48 @@ export default class Tile extends React.Component {
     const {activity, navigation} = this.props;
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Detail', {activity: activity})}
-        style={[styles.tile, {backgroundColor: getBgColor(activity)}]}>
-        <Text style={styles.tileTitle}>{activity.title}</Text>
+        style={styles.tileTouchable}
+        onPress={() => navigation.navigate('Detail', {activity: activity})}>
+        <View style={[styles.tile, {backgroundColor: getBgColor(activity)}]}>
+          <TouchableOpacity style={styles.deleteTouchable}>
+            <Image
+              style={[styles.delete, {tintColor: getColor(activity)}]}
+              source={require('../Images/Delete.png')}
+            />
+          </TouchableOpacity>
+          <Text style={[styles.tileTitle, {color: getColor(activity)}]}>
+            {activity.title}
+          </Text>
+        </View>
       </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  // TODO: space these out correctly - we probably need rows that hold two tiles each
+  tileTouchable: {
+    width: '44%',
+    marginTop: '2%',
+  },
   tile: {
-    // width: '50%',
-    // padding: 2,
-    flex: 1,
     aspectRatio: 1,
-    margin: 5,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tileTitle: {
-    fontSize: 18,
-    color: 'white',
+    width: '80%',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  deleteTouchable: {
+    position: 'absolute',
+    right: 12,
+    top: 12,
+  },
+  delete: {
+    width: 20,
+    height: 20,
   },
 });

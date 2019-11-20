@@ -2,21 +2,25 @@ import * as React from 'react';
 import firebase from 'firebase';
 
 import defaultActivites from '../Activities/DefaultActivities';
+import NavIcon from '../Components/NavIcon';
 import Tile from '../Components/ActivityTile';
 import firestore from '../../firebase';
 
-import {SafeAreaView, FlatList, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, SafeAreaView, FlatList, Text} from 'react-native';
 
 class HomeScreen extends React.Component {
   // TODO render activities from firebase and current activity from firebase
 
-  // static navigationOptions = ({navigation}) => {
-  //   const params = navigation.state.params || {};
-
-  //   return {
-  //     title: 'Home',
-  //   };
-  // };
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <NavIcon
+          onPress={() => navigation.push('Profile')}
+          icon={require('../Images/Profile.png')}
+        />
+      ),
+    };
+  };
 
   state = {
     activities: [],
@@ -112,26 +116,32 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    const currActivity = this.state.currActivity
-      ? `Current activity: ${this.state.currActivity}`
-      : 'No activity currently selected';
+    const {currActivity} = this.state;
     return (
-      <SafeAreaView>
-        <TouchableOpacity onPress={() => this.props.navigation.push('Profile')}>
-          <Text>Profile (click me)</Text>
-        </TouchableOpacity>
-        <Text>{currActivity}</Text>
+      <>
+        <SafeAreaView>
+          {currActivity !== null && <Text>{currActivity}</Text>}
+        </SafeAreaView>
         <FlatList
           data={this.state.activities}
           numColumns={2}
+          columnWrapperStyle={styles.container}
           renderItem={({item}) => (
             <Tile navigation={this.props.navigation} activity={item} />
           )}
           keyExtractor={item => item.id}
         />
-      </SafeAreaView>
+      </>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: '2%',
+    justifyContent: 'space-around',
+  },
+});
 
 export default HomeScreen;
