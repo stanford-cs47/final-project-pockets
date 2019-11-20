@@ -11,6 +11,7 @@ import {
   Button,
 } from 'react-native';
 import firebase from 'firebase';
+import DropDownHolder from '../Components/DropdownHolder';
 
 import firestore from '../../firebase';
 
@@ -24,6 +25,10 @@ const doActivity = (activity, navigation) => {
     navigation.navigate('WebActivity', {activity: activity});
     // TODO: make it navigate back to home when they back out of the webview
   } else {
+    DropDownHolder.dropDown.alertWithType(
+      'custom',
+      `Activity selected: ${activity.title}`,
+    );
     navigation.navigate('Home');
   }
 };
@@ -33,14 +38,12 @@ const blackList = async activityId => {
   try {
     const user = firebase.auth().currentUser;
     let userRef = firestore.doc('users/' + user.uid);
-    console.log('activity to blacklsit: ', activityId);
     let userInfo = await userRef.get();
 
     if (userInfo.exists) {
       if (userInfo.data().blacklist) {
         // get blacklist and add current value
         let blacklist = userInfo.data().blacklist;
-        console.log('blacklist exists:', blacklist);
         blacklist.push(activityId);
         userRef.set({blacklist: blacklist}, {merge: true});
       } else {
@@ -83,6 +86,10 @@ const DetailScreen = props => {
                 blackList(activity.id);
                 setModalOpen(false);
                 navigation.navigate('Home');
+                DropDownHolder.dropDown.alertWithType(
+                  'custom',
+                  'Activity removed from suggestions',
+                );
               }}
             />
             <Button

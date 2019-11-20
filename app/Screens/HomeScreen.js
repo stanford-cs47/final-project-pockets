@@ -8,8 +8,6 @@ import firestore from '../../firebase';
 import {SafeAreaView, FlatList, TouchableOpacity, Text} from 'react-native';
 
 class HomeScreen extends React.Component {
-  // TODO render activities from firebase and current activity from firebase
-
   // static navigationOptions = ({navigation}) => {
   //   const params = navigation.state.params || {};
 
@@ -24,13 +22,12 @@ class HomeScreen extends React.Component {
     isRefreshing: false,
     unsubscribeActivities: null,
     unsubscribeCurrAct: null,
+    unsubscribeBlacklist: null,
   };
 
   componentDidMount() {
     const user = firebase.auth().currentUser;
-    let activitiesRef = firestore.collection(
-      'users/' + user.uid + '/activities',
-    );
+    let activitiesRef = firestore.collection('/activities');
     let currActRef = firestore.doc('users/' + user.uid);
 
     // Updates activities and current activity in real time
@@ -40,6 +37,7 @@ class HomeScreen extends React.Component {
 
     let unsubscribeCurrAct = currActRef.onSnapshot(() => {
       this.reloadCurrActivity();
+      this.reloadActivities();
     });
 
     this.setState({unsubscribeActivities, unsubscribeCurrAct});
@@ -50,6 +48,7 @@ class HomeScreen extends React.Component {
 
   componentWillUnmount() {
     this.state.unsubscribeActivities();
+    this.state.unsubscribeCurrAct();
   }
 
   reloadActivities = async () => {
@@ -60,11 +59,9 @@ class HomeScreen extends React.Component {
 
   getActivities = async () => {
     try {
-      // const user = firebase.auth().currentUser;
       let activities = [];
 
       let activityCollRef = firestore.collection('/activities');
-      // TODO: get an added activity on firebase to show up without refreshing?
       let allActivities = await activityCollRef.get();
       allActivities.forEach(activity => {
         let newActivity = activity.data();
@@ -72,8 +69,14 @@ class HomeScreen extends React.Component {
         activities.push(newActivity);
       });
 
-      // TODO: get the actual user's blacklist instead
-      let blacklist = ['0VdclitGuf5VJa38JB1I', 'uFRTKbSu7kYMtbPGMM0D'];
+      let blacklist = [];
+      const user = firebase.auth().currentUser;
+      const userDocRef = firestore.doc('users/' + user.uid);
+      const userInfo = await userDocRef.get();
+
+      if (userInfo.exists) {
+        blacklist = userInfo.data().blacklist ? userInfo.data().blacklist : [];
+      }
 
       let filtered = activities.filter(function(e) {
         return this.indexOf(e.id) < 0;
@@ -92,7 +95,6 @@ class HomeScreen extends React.Component {
     this.setState({currActivity: currActivity, isRefreshing: false});
   };
 
-  // Q: why can't we just set state within this block?
   getCurrActivity = async () => {
     try {
       const user = firebase.auth().currentUser;

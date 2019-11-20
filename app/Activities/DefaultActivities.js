@@ -46,6 +46,13 @@ let defaultActivites = [
     img: null,
     link: null,
   },
+  {title: 'Do laundry', type: 'productivity', img: null, link: null},
+  {
+    title: 'New vocabulary word',
+    type: 'edu',
+    img: null,
+    link: 'https://www.dictionary.com/e/word-of-the-day/',
+  },
 ];
 
 export default defaultActivites;

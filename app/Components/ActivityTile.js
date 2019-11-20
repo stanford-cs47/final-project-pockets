@@ -5,15 +5,15 @@ import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 // TODO: make colors look good lol
 const getBgColor = activity => {
   if (activity.type === 'health') {
-    return 'blue';
+    return '#18e6ed';
   } else if (activity.type === 'fun') {
-    return 'orange';
+    return '#fcba03';
   } else if (activity.type === 'edu') {
-    return 'red';
+    return '#ff5724';
   } else if (activity.type === 'productivity') {
-    return 'green';
+    return '#b5e38a';
   } else {
-    return 'black';
+    return '#d273f5';
   }
 };
 
