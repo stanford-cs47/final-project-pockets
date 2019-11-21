@@ -31,8 +31,10 @@ const AppNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       headerStyle: styles.header,
+      headerTintColor: '#C34A76',
     },
     cardShadowEnabled: false,
+    mode: 'modal',
   },
 );
 

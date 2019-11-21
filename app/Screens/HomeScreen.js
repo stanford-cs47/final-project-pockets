@@ -4,9 +4,11 @@ import firebase from 'firebase';
 import defaultActivites from '../Activities/DefaultActivities';
 import NavIcon from '../Components/NavIcon';
 import Tile from '../Components/ActivityTile';
+import RecentTile from '../Components/RecentTile';
 import firestore from '../../firebase';
+import DropDownHolder from '../Components/DropdownHolder';
 
-import {StyleSheet, SafeAreaView, FlatList, Text} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
 
 class HomeScreen extends React.Component {
   // TODO render activities from firebase and current activity from firebase
@@ -17,6 +19,7 @@ class HomeScreen extends React.Component {
         <NavIcon
           onPress={() => navigation.push('Profile')}
           icon={require('../Images/Profile.png')}
+          big={true}
         />
       ),
     };
@@ -95,6 +98,37 @@ class HomeScreen extends React.Component {
     return [];
   };
 
+  // adds activity id to list of id's that user no longer wants to see
+  blacklistActivity = async activityId => {
+    const {navigation} = this.props;
+    try {
+      const user = firebase.auth().currentUser;
+      let userRef = firestore.doc('users/' + user.uid);
+      let userInfo = await userRef.get();
+
+      if (userInfo.exists) {
+        if (userInfo.data().blacklist) {
+          // get blacklist and add current value
+          let blacklist = userInfo.data().blacklist;
+          blacklist.push(activityId);
+          userRef.set({blacklist: blacklist}, {merge: true});
+        } else {
+          // make new blacklist and add current value
+          let blacklist = [activityId];
+          userRef.set({blacklist: blacklist}, {merge: true});
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // this.setModalOpen(false);
+    navigation.navigate('Home');
+    DropDownHolder.dropDown.alertWithType(
+      'custom',
+      'Activity removed from suggestions',
+    );
+  };
+
   reloadCurrActivity = async () => {
     this.setState({isRefreshing: true});
     const currActivity = await this.getCurrActivity();
@@ -108,7 +142,7 @@ class HomeScreen extends React.Component {
       let userInfo = await userRef.get();
       if (userInfo.exists) {
         if (userInfo.data().currActivity) {
-          return userInfo.data().currActivity.title;
+          return userInfo.data().currActivity;
         }
       } else {
         return null;
@@ -119,28 +153,35 @@ class HomeScreen extends React.Component {
     return '';
   };
 
-  render() {
+  renderRecentActivity = () => {
     const {currActivity} = this.state;
-    return (
-      <>
-        <SafeAreaView>
-          {currActivity !== null && (
-            <Text
-              style={{
-                marginLeft: '5%',
-              }}>{`Currently selected: ${currActivity}`}</Text>
-          )}
-        </SafeAreaView>
-        <FlatList
-          data={this.state.activities}
-          numColumns={2}
-          columnWrapperStyle={styles.container}
-          renderItem={({item}) => (
-            <Tile navigation={this.props.navigation} activity={item} />
-          )}
-          keyExtractor={item => item.id}
+    if (currActivity !== null) {
+      return (
+        <RecentTile
+          navigation={this.props.navigation}
+          activity={currActivity}
         />
-      </>
+      );
+    }
+    return null;
+  };
+
+  render() {
+    return (
+      <FlatList
+        data={this.state.activities}
+        numColumns={2}
+        columnWrapperStyle={styles.container}
+        ListHeaderComponent={this.renderRecentActivity}
+        renderItem={({item}) => (
+          <Tile
+            navigation={this.props.navigation}
+            activity={item}
+            blacklistActivity={this.blacklistActivity}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
     );
   }
 }

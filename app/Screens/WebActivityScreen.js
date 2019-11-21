@@ -1,14 +1,27 @@
 import React from 'react';
-import {SafeAreaView, View, Text} from 'react-native';
 import {WebView} from 'react-native-webview';
+import NavIcon from '../Components/NavIcon';
 
-const WebActivityScreen = props => {
-  const {navigation} = props;
-  const activity = JSON.parse(
-    JSON.stringify(navigation.getParam('activity', {})),
-  );
-  console.log('checking out a web activity', activity);
-  return <WebView source={{uri: activity.link}} />;
-};
+class WebActivityScreen extends React.Component {
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <NavIcon
+          onPress={() => navigation.navigate('Home')}
+          icon={require('../Images/Delete.png')}
+        />
+      ),
+    };
+  };
+
+  render() {
+    const {navigation} = this.props;
+    const activity = JSON.parse(
+      JSON.stringify(navigation.getParam('activity', {})),
+    );
+    console.log('checking out a web activity', activity);
+    return <WebView source={{uri: activity.link}} />;
+  }
+}
 
 export default WebActivityScreen;

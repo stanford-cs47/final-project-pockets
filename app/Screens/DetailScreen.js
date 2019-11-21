@@ -1,138 +1,155 @@
 import * as React from 'react';
 
+import firebase from 'firebase';
+import firestore from '../../firebase';
+
 import {
   StyleSheet,
   SafeAreaView,
   Text,
   Image,
   TouchableOpacity,
-  Modal,
+  Alert,
   View,
-  Button,
 } from 'react-native';
-import firebase from 'firebase';
+
 import DropDownHolder from '../Components/DropdownHolder';
+import NavIcon from '../Components/NavIcon';
+import {getBgColor, getColor} from '../Constants/Color';
 
-import firestore from '../../firebase';
+class DetailScreen extends React.Component {
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <NavIcon
+          onPress={() => navigation.goBack()}
+          icon={require('../Images/Delete.png')}
+          color={getColor(navigation.getParam('activity'))}
+        />
+      ),
+      headerStyle: {
+        borderBottomWidth: 0,
+        backgroundColor: getBgColor(navigation.getParam('activity')),
+      },
+    };
+  };
 
-const doActivity = (activity, navigation) => {
-  const user = firebase.auth().currentUser;
-  var userDocRef = firestore.doc('users/' + user.uid);
-  userDocRef.set({currActivity: activity}, {merge: true});
+  doActivity = (activity, navigation) => {
+    const user = firebase.auth().currentUser;
+    var userDocRef = firestore.doc('users/' + user.uid);
+    userDocRef.set({currActivity: activity}, {merge: true});
 
-  if (activity.link != null) {
-    // open page with link
-    navigation.navigate('WebActivity', {activity: activity});
-    // TODO: make it navigate back to home when they back out of the webview
-  } else {
+    if (activity.link != null) {
+      // open page with link
+      navigation.navigate('WebActivity', {activity: activity});
+      // TODO: make it navigate back to home when they back out of the webview
+    } else {
+      DropDownHolder.dropDown.alertWithType(
+        'custom',
+        `Activity selected: ${activity.title}`,
+      );
+      navigation.navigate('Home');
+    }
+  };
+
+  // adds activity id to list of id's that user no longer wants to see
+  blacklistActivity = async activityId => {
+    const {navigation} = this.props;
+    try {
+      const user = firebase.auth().currentUser;
+      let userRef = firestore.doc('users/' + user.uid);
+      let userInfo = await userRef.get();
+
+      if (userInfo.exists) {
+        if (userInfo.data().blacklist) {
+          // get blacklist and add current value
+          let blacklist = userInfo.data().blacklist;
+          blacklist.push(activityId);
+          userRef.set({blacklist: blacklist}, {merge: true});
+        } else {
+          // make new blacklist and add current value
+          let blacklist = [activityId];
+          userRef.set({blacklist: blacklist}, {merge: true});
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // this.setModalOpen(false);
+    navigation.navigate('Home');
     DropDownHolder.dropDown.alertWithType(
       'custom',
-      `Activity selected: ${activity.title}`,
+      'Activity removed from suggestions',
     );
-    navigation.navigate('Home');
-  }
-};
+  };
 
-// adds activity id to list of id's that user no longer wants to see
-const blackList = async activityId => {
-  try {
-    const user = firebase.auth().currentUser;
-    let userRef = firestore.doc('users/' + user.uid);
-    let userInfo = await userRef.get();
+  render() {
+    const {navigation} = this.props;
 
-    if (userInfo.exists) {
-      if (userInfo.data().blacklist) {
-        // get blacklist and add current value
-        let blacklist = userInfo.data().blacklist;
-        blacklist.push(activityId);
-        userRef.set({blacklist: blacklist}, {merge: true});
-      } else {
-        // make new blacklist and add current value
-        let blacklist = [activityId];
-        userRef.set({blacklist: blacklist}, {merge: true});
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+    // const [modalOpen, setModalOpen] = React.useState(false);
 
-const DetailScreen = props => {
-  const {navigation} = props;
+    // TODO: error handling if there is no object passed through for an activity
+    const activity = JSON.parse(
+      JSON.stringify(navigation.getParam('activity', {})),
+    );
 
-  const [modalOpen, setModalOpen] = React.useState(false);
-
-  // TODO: error handling if there is no object passed through for an activity
-  const activity = JSON.parse(
-    JSON.stringify(navigation.getParam('activity', {})),
-  );
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <Modal
-        visible={modalOpen}
-        transparent={true}
-        onRequestClose={() => {
-          setModalOpen(false);
-        }}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modal}>
-            <Text style={{fontSize: 20}}>
-              Are you sure you no longer want to see this activity suggestion?
-            </Text>
-            <Button
-              title="Yes"
-              onPress={() => {
-                blackList(activity.id);
-                setModalOpen(false);
-                navigation.navigate('Home');
-                DropDownHolder.dropDown.alertWithType(
-                  'custom',
-                  'Activity removed from suggestions',
-                );
-              }}
-            />
-            <Button
-              title="No"
-              onPress={() => {
-                setModalOpen(false);
-              }}
-            />
-          </View>
+    return (
+      <SafeAreaView style={[styles.container, {backgroundColor: getBgColor(activity)}]}>
+        <View style={styles.activityTextView}>
+          <Text style={[styles.activityText, {color: getColor(activity)}]}>
+            {activity.title}
+          </Text>
         </View>
-      </Modal>
 
-      <Text style={styles.activityText}>{activity.title}</Text>
+        <Image
+          source={
+            activity.img == null
+              ? require('../Images/pocket.png')
+              : {uri: activity.img}
+          }
+          // source={require('../Images/pocket.png')}
+          style={styles.image}
+        />
 
-      <Image
-        source={
-          activity.img == null
-            ? require('../Images/pocket.png')
-            : {uri: activity.img}
-        }
-        // source={require('../Images/pocket.png')}
-        style={styles.image}
-      />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.doActivity(activity, navigation)}>
+          <Text style={[styles.buttonText, {color: getColor(activity)}]}>
+            Let's Do It!
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          doActivity(activity, navigation);
-        }}>
-        <Text style={styles.buttonText}>Sounds good</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          setModalOpen(true);
-        }}>
-        <Text style={{fontSize: 20, textDecorationLine: 'underline'}}>
-          Don't show me this activity again
-        </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
-  );
-};
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert(
+              'Remove Activity',
+              'This activity will not be shown in the future',
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {
+                  text: 'OK',
+                  onPress: () => this.blacklistActivity(activity.id)
+                },
+              ],
+              {cancelable: true},
+            );
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: getColor(activity),
+              textDecorationLine: 'underline',
+            }}>
+            Don't show me this activity again
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
+}
 
 export default DetailScreen;
 
@@ -144,22 +161,33 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginBottom: 100,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'blue',
-    width: 200,
+    width: 300,
+    height: 64,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFF',
   },
   buttonText: {
-    fontSize: 30,
-    color: 'white',
+    textTransform: 'uppercase',
+    fontSize: 20,
+    fontWeight: '700',
   },
   activityText: {
     fontSize: 30,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  activityTextView: {
+    width: '100%',
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
   modalBackground: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
