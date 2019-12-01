@@ -12,8 +12,6 @@ import {StyleSheet, FlatList} from 'react-native';
 import {getColor} from '../Constants/Color';
 
 class HomeScreen extends React.Component {
-  // TODO render activities from firebase and current activity from firebase
-
   static navigationOptions = ({navigation}) => {
     return {
       headerLeft: (
