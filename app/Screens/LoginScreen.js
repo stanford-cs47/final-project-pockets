@@ -99,7 +99,11 @@ export default class LoginScreen extends React.Component {
             source={require('../Images/Logo.png')}
           />
         </View>
-        <Text style={styles.headerText}>Welcome to Pockets!</Text>
+        <Text style={styles.headerText}>
+          {this.state.newUser
+            ? 'New Pockets Account'
+            : 'Welcome Back to Pockets'}
+        </Text>
         {this.state.newUser && (
           <>
             <TextInput
@@ -178,7 +182,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 100,
+    paddingTop: 65,
     paddingBottom: 24,
     justifyContent: 'center',
     alignItems: 'center',
