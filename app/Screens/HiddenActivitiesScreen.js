@@ -1,6 +1,7 @@
 import * as React from 'react';
 import firebase from 'firebase';
 import firestore from '../../firebase';
+import {getBgColor, getColor} from '../Constants/Color';
 
 import {
   SafeAreaView,
@@ -16,12 +17,12 @@ import NavIcon from '../Components/NavIcon';
 const BlackListItem = props => {
   return (
     <TouchableOpacity
-      style={styles.container}
       onPress={() => {
         props.unBlackList(props.id);
         console.log(`bring ${props.title} back`);
-      }}>
-      <Text style={styles.text}>{props.title}</Text>
+      }}
+      style={[styles.blacklistItem, {backgroundColor: getBgColor(props)}]}>
+      <Text style={[styles.text, {color: getColor(props)}]}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
@@ -102,7 +103,11 @@ class HiddenActivitiesScreen extends React.Component {
 
       if (userInfo.exists) {
         blacklist = userInfo.data().blacklist.map(id => {
-          return {id: id, title: activities[id].title};
+          return {
+            id: id,
+            title: activities[id].title,
+            type: activities[id].type,
+          };
         });
       }
       return blacklist;
@@ -114,19 +119,25 @@ class HiddenActivitiesScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{height: '100%'}}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.headerText}>
+          Select an activity to re-display in your home screen.
+        </Text>
         <FlatList
           data={this.state.blacklist}
           renderItem={({item}) => (
             <BlackListItem
               title={item.title}
               id={item.id}
+              type={item.type}
               unBlackList={this.unBlackList}
             />
           )}
           ListEmptyComponent={
-            <View style={styles.container}>
-              <Text style={styles.text}>No hidden items</Text>
+            <View>
+              <Text style={[styles.text, {color: 'grey'}]}>
+                No hidden items to display
+              </Text>
             </View>
           }
           keyExtractor={item => item.id}
@@ -137,16 +148,28 @@ class HiddenActivitiesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 25,
+    fontWeight: '700',
+    marginBottom: 15,
+  },
   container: {
-    width: '100%',
-    height: 96,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // width: '100%',
+    // height: 96,
+    margin: '11%',
+    height: '100%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   text: {
-    textAlign: 'center',
-    fontSize: 16,
+    // textAlign: 'center',
+    fontSize: 20,
     fontWeight: '700',
+  },
+  blacklistItem: {
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
   },
 });
 
