@@ -224,7 +224,9 @@ class HomeScreen extends React.Component {
             <TouchableOpacity
               style={[styles.filter, {backgroundColor: '#D0F4DE'}]}
               onPress={() => this.updateFilter('productivity')}>
-              <Text style={[styles.text, {color: '#125518'}]}>Productivity</Text>
+              <Text style={[styles.text, {color: '#125518'}]}>
+                Productivity
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={{flex: 1}} opacity={this.filterOpacity('fun')}>
