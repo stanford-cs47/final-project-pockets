@@ -37,7 +37,7 @@ export default class LoginScreen extends React.Component {
       loginEmail: '',
       loginPassword: '',
       errorMessageLogin: '',
-      newUser: true,
+      newUser: false,
     };
   }
 
