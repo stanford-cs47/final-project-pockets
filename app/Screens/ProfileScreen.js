@@ -24,6 +24,10 @@ const ProfileScreen = props => {
         }>
         <Text>Hidden Activities</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('SuggestActivity')}>
+        <Text>Suggest an Activity!</Text>
+      </TouchableOpacity>
     </View>
   );
 };
