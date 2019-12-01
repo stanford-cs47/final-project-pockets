@@ -36,8 +36,8 @@ class SuggestActivityScreen extends React.Component {
           </Text>
           <Text style={styles.text}>We're always looking for more ideas!</Text>
           <Text style={styles.text}>
-            Be creative, but remember that you're writing a suggested activity
-            for <Text style={{fontStyle: 'italic'}}>everyone</Text> to see.{' '}
+            Be creative, but remember that you're suggesting an activity for{' '}
+            <Text style={{fontStyle: 'italic'}}>everyone</Text> to see.{' '}
             {'\u263A'}
           </Text>
           {/* TODO: show alert modal when you have suggested an activity */}

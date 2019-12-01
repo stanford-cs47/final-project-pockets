@@ -116,7 +116,11 @@ export default class LoginScreen extends React.Component {
           onChangeText={signUpPassword => this.setState({signUpPassword})}
           placeholder="Password"
         />
-        <Button title="Sign Up" onPress={() => this.signUp()} color="#ffa000" />
+        <Button
+          title="Sign Up"
+          onPress={() => this.signUp()}
+          color="cornflowerblue"
+        />
 
         <TextInput
           autoCapitalize="none"
@@ -135,7 +139,11 @@ export default class LoginScreen extends React.Component {
           onChangeText={loginPassword => this.setState({loginPassword})}
           placeholder="Password"
         />
-        <Button title="Login" onPress={() => this.login()} color="#ffa000" />
+        <Button
+          title="Login"
+          onPress={() => this.login()}
+          color="cornflowerblue"
+        />
       </SafeAreaView>
     );
   }
