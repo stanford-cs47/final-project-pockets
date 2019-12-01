@@ -2,6 +2,7 @@ import * as React from 'react';
 import firebase from 'firebase';
 
 import {
+  Alert,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -50,7 +51,25 @@ class ProfileScreen extends React.Component {
         text: 'Integrate Calendar',
       },
       {
-        action: this.signOut,
+        action: () => {
+          Alert.alert(
+            'Are you sure you want to log out?',
+            '',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Ok',
+                onPress: () => {
+                  this.signOut();
+                },
+              },
+            ],
+            {cancelable: true},
+          );
+        },
         text: 'Log Out',
       },
     ];

@@ -9,6 +9,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 
@@ -18,8 +19,24 @@ const BlackListItem = props => {
   return (
     <TouchableOpacity
       onPress={() => {
-        props.unBlackList(props.id);
-        console.log(`bring ${props.title} back`);
+        Alert.alert(
+          'Bring activity back to home screen',
+          'Are you sure you want to see this activity in the home screen again?',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Ok',
+              onPress: () => {
+                props.unBlackList(props.id);
+                console.log(`bring ${props.title} back`);
+              },
+            },
+          ],
+          {cancelable: true},
+        );
       }}
       style={[styles.blacklistItem, {backgroundColor: getBgColor(props)}]}>
       <Text style={[styles.text, {color: getColor(props)}]}>{props.title}</Text>
