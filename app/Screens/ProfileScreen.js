@@ -53,6 +53,7 @@ class ProfileScreen extends React.Component {
 
     return (
       <SafeAreaView>
+        {/* TODO: have a "Hi, username" at the top or something equivalent */}
         <FlatList
           data={data}
           renderItem={({item}) => (
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
   },
 });
