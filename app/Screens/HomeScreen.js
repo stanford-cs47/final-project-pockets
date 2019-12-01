@@ -1,7 +1,6 @@
 import * as React from 'react';
 import firebase from 'firebase';
 
-import defaultActivites from '../Activities/DefaultActivities';
 import NavIcon from '../Components/NavIcon';
 import Tile from '../Components/ActivityTile';
 import RecentTile from '../Components/RecentTile';
@@ -16,7 +15,6 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {getColor} from '../Constants/Color';
 
 class HomeScreen extends React.Component {
   // TODO render activities from firebase and current activity from firebase
@@ -32,11 +30,7 @@ class HomeScreen extends React.Component {
           }
           icon={require('../Images/Profile.png')}
           big={true}
-          color={
-            navigation.getParam('activity', null)
-              ? getColor(navigation.getParam('activity', null))
-              : '#000'
-          }
+          color="#202020"
         />
       ),
     };
@@ -213,7 +207,7 @@ class HomeScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{width: '100%', height: '100%'}}>
         <View style={styles.container}>
           <View style={{flex: 1}} opacity={this.filterOpacity('health')}>
             <TouchableOpacity

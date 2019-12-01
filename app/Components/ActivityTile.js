@@ -38,6 +38,7 @@ export default class Tile extends React.Component {
               );
             }}>
             <Image
+              opacity={0.75}
               style={[styles.delete, {tintColor: getColor(activity)}]}
               source={require('../Images/Delete.png')}
             />
