@@ -17,7 +17,9 @@ class HomeScreen extends React.Component {
     return {
       headerLeft: (
         <NavIcon
-          onPress={() => navigation.push('Profile')}
+          onPress={() =>
+            navigation.navigate('Profile', {navigation: navigation})
+          }
           icon={require('../Images/Profile.png')}
           big={true}
         />

@@ -94,7 +94,8 @@ class DetailScreen extends React.Component {
     );
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: getBgColor(activity)}]}>
+      <SafeAreaView
+        style={[styles.container, {backgroundColor: getBgColor(activity)}]}>
         <View style={styles.activityTextView}>
           <Text style={[styles.activityText, {color: getColor(activity)}]}>
             {activity.title}
@@ -123,7 +124,7 @@ class DetailScreen extends React.Component {
           onPress={() => {
             Alert.alert(
               'Remove Activity',
-              'This activity will not be shown in the future',
+              'This activity will not be shown in the future. To see it again, re-select it from your profile page',
               [
                 {
                   text: 'Cancel',
@@ -131,7 +132,7 @@ class DetailScreen extends React.Component {
                 },
                 {
                   text: 'OK',
-                  onPress: () => this.blacklistActivity(activity.id)
+                  onPress: () => this.blacklistActivity(activity.id),
                 },
               ],
               {cancelable: true},

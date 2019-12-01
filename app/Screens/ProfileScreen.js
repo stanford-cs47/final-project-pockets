@@ -2,7 +2,7 @@ import * as React from 'react';
 import firebase from 'firebase';
 import {View, Text, TouchableOpacity} from 'react-native';
 
-const ProfileScreen = () => {
+const ProfileScreen = props => {
   const signOut = async () => {
     try {
       await firebase.auth().signOut();
@@ -15,6 +15,14 @@ const ProfileScreen = () => {
     <View>
       <TouchableOpacity onPress={() => signOut()}>
         <Text>Log out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('HiddenActivities', {
+            navigation: props.navigation,
+          })
+        }>
+        <Text>Hidden Activities</Text>
       </TouchableOpacity>
     </View>
   );

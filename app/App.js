@@ -13,6 +13,7 @@ import DetailScreen from './Screens/DetailScreen';
 import LoginScreen from './Screens/LoginScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import WebActivityScreen from './Screens/WebActivityScreen';
+import HiddenActivitiesScreen from './Screens/HiddenActivitiesScreen';
 
 const styles = StyleSheet.create({
   header: {
@@ -27,6 +28,7 @@ const AppNavigator = createStackNavigator(
     Detail: DetailScreen,
     WebActivity: WebActivityScreen,
     Profile: ProfileScreen,
+    HiddenActivities: HiddenActivitiesScreen,
   },
   {
     defaultNavigationOptions: {

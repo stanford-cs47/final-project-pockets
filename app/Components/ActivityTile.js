@@ -23,7 +23,7 @@ export default class Tile extends React.Component {
             onPress={() => {
               Alert.alert(
                 'Remove Activity',
-                'This activity will not be shown in the future',
+                'This activity will not be shown in the future. To see it again, re-select it from your profile page.',
                 [
                   {
                     text: 'Cancel',
@@ -31,7 +31,7 @@ export default class Tile extends React.Component {
                   },
                   {
                     text: 'OK',
-                    onPress: () => blacklistActivity(activity.id)
+                    onPress: () => blacklistActivity(activity.id),
                   },
                 ],
                 {cancelable: true},
