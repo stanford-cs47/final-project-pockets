@@ -17,7 +17,7 @@ export default class Tile extends React.Component {
               {backgroundColor: 'rgba(255, 255, 255, 0.6)'},
             ]}>
             <Text style={[styles.tileTitle, {color: getColor(activity)}]}>
-              {'Most Recent Activity'}
+              {'Current Activity'}
             </Text>
           </View>
           <View style={styles.tileRow}>

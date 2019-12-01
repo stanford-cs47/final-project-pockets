@@ -23,7 +23,7 @@ class DetailScreen extends React.Component {
       headerLeft: (
         <NavIcon
           onPress={() => navigation.goBack()}
-          icon={require('../Images/Delete.png')}
+          icon={require('../Images/Exit.png')}
           color={getColor(navigation.getParam('activity'))}
         />
       ),

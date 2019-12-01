@@ -1,22 +1,44 @@
 import * as React from 'react';
 import firebase from 'firebase';
-
-import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import firestore from '../../firebase';
+
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import NavIcon from '../Components/NavIcon';
 
 const BlackListItem = props => {
   return (
     <TouchableOpacity
+      style={styles.container}
       onPress={() => {
         props.unBlackList(props.id);
         console.log(`bring ${props.title} back`);
       }}>
-      <Text>{props.title}</Text>
+      <Text style={styles.text}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
 
 class HiddenActivitiesScreen extends React.Component {
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <NavIcon
+          onPress={() => navigation.goBack()}
+          icon={require('../Images/Exit.png')}
+          color={'#000'}
+        />
+      ),
+    };
+  };
+
   state = {
     blacklist: [],
     isRefreshing: false,
@@ -92,22 +114,40 @@ class HiddenActivitiesScreen extends React.Component {
 
   render() {
     return (
-      <FlatList
-        data={this.state.blacklist}
-        renderItem={({item}) => (
-          <BlackListItem
-            title={item.title}
-            id={item.id}
-            unBlackList={this.unBlackList}
-          />
-        )}
-        ListEmptyComponent={<Text>No hidden items</Text>}
-        keyExtractor={item => item.id}
-      />
+      <SafeAreaView style={{height: '100%'}}>
+        <FlatList
+          data={this.state.blacklist}
+          renderItem={({item}) => (
+            <BlackListItem
+              title={item.title}
+              id={item.id}
+              unBlackList={this.unBlackList}
+            />
+          )}
+          ListEmptyComponent={
+            <View style={styles.container}>
+              <Text style={styles.text}>No hidden items</Text>
+            </View>
+          }
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: 96,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+});
 
 export default HiddenActivitiesScreen;

@@ -9,6 +9,7 @@ import firestore from '../../firebase';
 import DropDownHolder from '../Components/DropdownHolder';
 
 import {StyleSheet, FlatList} from 'react-native';
+import {getColor} from '../Constants/Color';
 
 class HomeScreen extends React.Component {
   // TODO render activities from firebase and current activity from firebase
@@ -18,10 +19,17 @@ class HomeScreen extends React.Component {
       headerLeft: (
         <NavIcon
           onPress={() =>
-            navigation.navigate('Profile', {navigation: navigation})
+            navigation.navigate('Profile', {
+              navigation: navigation,
+            })
           }
           icon={require('../Images/Profile.png')}
           big={true}
+          color={
+            navigation.getParam('activity', null)
+              ? getColor(navigation.getParam('activity', null))
+              : '#000'
+          }
         />
       ),
     };
@@ -144,6 +152,9 @@ class HomeScreen extends React.Component {
       let userInfo = await userRef.get();
       if (userInfo.exists) {
         if (userInfo.data().currActivity) {
+          this.props.navigation.setParams({
+            activity: userInfo.data().currActivity,
+          });
           return userInfo.data().currActivity;
         }
       } else {

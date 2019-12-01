@@ -8,7 +8,7 @@ class WebActivityScreen extends React.Component {
       headerLeft: (
         <NavIcon
           onPress={() => navigation.navigate('Home')}
-          icon={require('../Images/Delete.png')}
+          icon={require('../Images/Exit.png')}
         />
       ),
     };

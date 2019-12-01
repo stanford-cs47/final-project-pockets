@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   },
   deleteTouchable: {
     position: 'absolute',
-    right: 12,
-    top: 12,
+    right: 10,
+    top: 10,
   },
   delete: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
   },
 });
