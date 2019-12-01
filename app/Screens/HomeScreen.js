@@ -8,7 +8,14 @@ import RecentTile from '../Components/RecentTile';
 import firestore from '../../firebase';
 import DropDownHolder from '../Components/DropdownHolder';
 
-import {StyleSheet, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  View,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {getColor} from '../Constants/Color';
 
 class HomeScreen extends React.Component {
@@ -40,6 +47,7 @@ class HomeScreen extends React.Component {
     unsubscribeActivities: null,
     unsubscribeCurrAct: null,
     unsubscribeBlacklist: null,
+    filter: [],
   };
 
   componentDidMount() {
@@ -177,31 +185,110 @@ class HomeScreen extends React.Component {
     return null;
   };
 
+  updateFilter = type => {
+    let filters = this.state.filter;
+
+    if (filters.includes(type)) {
+      filters = filters.filter(f => f !== type);
+    } else {
+      filters.push(type);
+    }
+
+    this.setState({filter: filters});
+  };
+
+  filterOpacity = type => {
+    return this.state.filter.length === 0 || this.state.filter.includes(type)
+      ? 1.0
+      : 0.2;
+  };
+
   render() {
+    let data = this.state.activities;
+
+    if (this.state.filter.length > 0) {
+      data = data.filter(activity => this.state.filter.includes(activity.type));
+    }
+
     return (
-      <FlatList
-        data={this.state.activities}
-        numColumns={2}
-        columnWrapperStyle={styles.container}
-        ListHeaderComponent={this.renderRecentActivity}
-        renderItem={({item}) => (
-          <Tile
-            navigation={this.props.navigation}
-            activity={item}
-            blacklistActivity={this.blacklistActivity}
-          />
-        )}
-        keyExtractor={item => item.id}
-      />
+      <SafeAreaView>
+        <View style={styles.container}>
+          <View style={{flex: 1}} opacity={this.filterOpacity('health')}>
+            <TouchableOpacity
+              style={[styles.filter, {backgroundColor: '#A9DEF9'}]}
+              onPress={() => this.updateFilter('health')}>
+              <Text style={[styles.text, {color: '#024663'}]}>Well-being</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1}} opacity={this.filterOpacity('productivity')}>
+            <TouchableOpacity
+              style={[styles.filter, {backgroundColor: '#D0F4DE'}]}
+              onPress={() => this.updateFilter('productivity')}>
+              <Text style={[styles.text, {color: '#125518'}]}>Productivity</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1}} opacity={this.filterOpacity('fun')}>
+            <TouchableOpacity
+              style={[styles.filter, {backgroundColor: '#FFE6A7'}]}
+              onPress={() => this.updateFilter('fun')}>
+              <Text style={[styles.text, {color: '#7A7330'}]}>Fun</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1}} opacity={this.filterOpacity('edu')}>
+            <TouchableOpacity
+              style={[styles.filter, {backgroundColor: '#F8C0C8'}]}
+              onPress={() => this.updateFilter('edu')}>
+              <Text style={[styles.text, {color: '#C34A76'}]}>Learning</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1}} opacity={this.filterOpacity('locations')}>
+            <TouchableOpacity
+              style={[styles.filter, {backgroundColor: '#DBB1E2'}]}
+              onPress={() => this.updateFilter('locations')}>
+              <Text style={[styles.text, {color: '#772485'}]}>Locations</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <FlatList
+          data={data}
+          numColumns={2}
+          columnWrapperStyle={styles.column}
+          ListHeaderComponent={this.renderRecentActivity}
+          renderItem={({item}) => (
+            <Tile
+              navigation={this.props.navigation}
+              activity={item}
+              blacklistActivity={this.blacklistActivity}
+            />
+          )}
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  column: {
     flex: 1,
     margin: '2%',
     justifyContent: 'space-around',
+  },
+  container: {
+    flexDirection: 'row',
+    margin: '2%',
+    justifyContent: 'space-around',
+  },
+  filter: {
+    height: 40,
+    margin: 4,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 10,
+    fontWeight: '700',
   },
 });
 
