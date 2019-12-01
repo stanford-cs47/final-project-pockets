@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   View,
   TextInput,
-  Button,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {material} from 'react-native-typography';
 import firestore from '../../firebase';
@@ -36,6 +37,7 @@ export default class LoginScreen extends React.Component {
       loginEmail: '',
       loginPassword: '',
       errorMessageLogin: '',
+      newUser: true,
     };
   }
 
@@ -90,60 +92,84 @@ export default class LoginScreen extends React.Component {
   // TODO: give error messages for login
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={styles.input}
-          value={this.state.signUpName}
-          onChangeText={signUpName => this.setState({signUpName})}
-          placeholder="Name"
-        />
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={styles.input}
-          value={this.state.signUpEmail}
-          onChangeText={signUpEmail => this.setState({signUpEmail})}
-          placeholder="Email"
-        />
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={styles.input}
-          value={this.state.signUpPassword}
-          secureTextEntry={true}
-          onChangeText={signUpPassword => this.setState({signUpPassword})}
-          placeholder="Password"
-        />
-        <Button
-          title="Sign Up"
-          onPress={() => this.signUp()}
-          color="cornflowerblue"
-        />
-
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={[styles.input, {marginTop: 50}]}
-          value={this.state.loginEmail}
-          onChangeText={loginEmail => this.setState({loginEmail})}
-          placeholder="Email"
-        />
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={styles.input}
-          value={this.state.loginPassword}
-          secureTextEntry={true}
-          onChangeText={loginPassword => this.setState({loginPassword})}
-          placeholder="Password"
-        />
-        <Button
-          title="Login"
-          onPress={() => this.login()}
-          color="cornflowerblue"
-        />
+      <SafeAreaView style={{height: '100%'}}>
+        <View style={styles.container}>
+          <Image
+            style={{width: 200, height: 200}}
+            source={require('../Images/Logo.png')}
+          />
+        </View>
+        <Text style={styles.headerText}>Welcome to Pockets!</Text>
+        {this.state.newUser && (
+          <>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.input}
+              value={this.state.signUpName}
+              onChangeText={signUpName => this.setState({signUpName})}
+              placeholder="Name"
+            />
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.input}
+              value={this.state.signUpEmail}
+              onChangeText={signUpEmail => this.setState({signUpEmail})}
+              placeholder="Email"
+            />
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.input}
+              value={this.state.signUpPassword}
+              secureTextEntry={true}
+              onChangeText={signUpPassword => this.setState({signUpPassword})}
+              placeholder="Password"
+            />
+            <TouchableOpacity
+              onPress={() => this.signUp()}
+              style={styles.button}>
+              <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setState({newUser: false})}>
+              <Text style={styles.textButton}>Already have an account?</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {!this.state.newUser && (
+          <>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={[styles.input, {marginTop: 50}]}
+              value={this.state.loginEmail}
+              onChangeText={loginEmail => this.setState({loginEmail})}
+              placeholder="Email"
+            />
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.input}
+              value={this.state.loginPassword}
+              secureTextEntry={true}
+              onChangeText={loginPassword => this.setState({loginPassword})}
+              placeholder="Password"
+            />
+            <TouchableOpacity
+              onPress={() => this.login()}
+              style={styles.button}>
+              <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
+                Log In
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setState({newUser: true})}>
+              <Text style={styles.textButton}>New to Pockets?</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </SafeAreaView>
     );
   }
@@ -151,19 +177,47 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
+    width: '100%',
+    paddingTop: 100,
+    paddingBottom: 24,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: '700',
+    padding: 32,
+    textAlign: 'center',
   },
   input: {
-    width: '90%',
-    fontSize: 20,
-    marginBottom: 10,
+    marginLeft: 32,
+    marginRight: 32,
+    marginTop: 8,
+    marginBottom: 8,
+    padding: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
+    borderRadius: 8,
     backgroundColor: 'whitesmoke',
-    padding: 5,
-    borderRadius: 5,
+    fontSize: 20,
+    fontWeight: '700',
   },
   button: {
-    marginBottom: 50,
+    height: 64,
+    marginLeft: 32,
+    marginRight: 32,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'cornflowerblue',
+  },
+  textButton: {
+    padding: 16,
+    fontSize: 16,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+    color: 'cornflowerblue',
   },
 });
