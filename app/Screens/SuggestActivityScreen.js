@@ -29,11 +29,18 @@ class SuggestActivityScreen extends React.Component {
   };
 
   makeSuggestion = async () => {
-    const user = firebase.auth().currentUser;
-    let suggestedRef = firestore.collection('/suggestedActivities');
-    if (this.state.suggestionText !== '') {
-      let newSuggestion = suggestedRef.doc();
-      newSuggestion.set({suggestion: this.state.suggestionText, uid: user.uid});
+    try {
+      const user = firebase.auth().currentUser;
+      let suggestedRef = firestore.collection('/suggestedActivities');
+      if (this.state.suggestionText !== '') {
+        let newSuggestion = suggestedRef.doc();
+        newSuggestion.set({
+          suggestion: this.state.suggestionText,
+          uid: user.uid,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
