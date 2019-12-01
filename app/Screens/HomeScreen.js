@@ -17,8 +17,6 @@ import {
 } from 'react-native';
 
 class HomeScreen extends React.Component {
-  // TODO render activities from firebase and current activity from firebase
-
   static navigationOptions = ({navigation}) => {
     return {
       headerLeft: (
@@ -220,7 +218,9 @@ class HomeScreen extends React.Component {
             <TouchableOpacity
               style={[styles.filter, {backgroundColor: '#D0F4DE'}]}
               onPress={() => this.updateFilter('productivity')}>
-              <Text style={[styles.text, {color: '#125518'}]}>Productivity</Text>
+              <Text style={[styles.text, {color: '#125518'}]}>
+                Productivity
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={{flex: 1}} opacity={this.filterOpacity('fun')}>

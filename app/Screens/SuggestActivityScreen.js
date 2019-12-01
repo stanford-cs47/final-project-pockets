@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import firestore from '../../firebase';
 
 import {
+  Alert,
   StyleSheet,
   Text,
   SafeAreaView,
@@ -25,6 +26,15 @@ class SuggestActivityScreen extends React.Component {
         />
       ),
     };
+  };
+
+  makeSuggestion = async () => {
+    const user = firebase.auth().currentUser;
+    let suggestedRef = firestore.collection('/suggestedActivities');
+    if (this.state.suggestionText !== '') {
+      let newSuggestion = suggestedRef.doc();
+      newSuggestion.set({suggestion: this.state.suggestionText, uid: user.uid});
+    }
   };
 
   render() {
@@ -53,7 +63,27 @@ class SuggestActivityScreen extends React.Component {
           <TouchableOpacity
             onPress={() => {
               console.log(this.state.suggestionText);
+              this.makeSuggestion();
               this.setState({suggestionText: ''});
+              Alert.alert(
+                'Submit Suggestion',
+                'Are you sure you want to submit this suggestion?',
+                [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: () =>
+                      Alert.alert(
+                        'Thanks for your suggestion!',
+                        "We'll review it, and if it looks good we'll add it to everyone's activities.",
+                      ),
+                  },
+                ],
+                {cancelable: true},
+              );
             }}
             style={styles.submitButton}>
             <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
