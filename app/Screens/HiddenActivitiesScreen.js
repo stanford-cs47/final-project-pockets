@@ -120,6 +120,7 @@ class HiddenActivitiesScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        {/* TODO: Modal for confirmation of re-adding and alert when you have */}
         <Text style={styles.headerText}>
           Select an activity to re-display in your home screen.
         </Text>
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 25,
     fontWeight: '700',
-    marginBottom: 15,
+    marginBottom: 25,
   },
   container: {
     // width: '100%',

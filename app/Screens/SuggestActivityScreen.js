@@ -32,38 +32,36 @@ class SuggestActivityScreen extends React.Component {
       <SafeAreaView>
         <View style={styles.container}>
           <Text style={styles.headerText}>
-            Recommend an activity for all users to see!
+            Suggest an activity for all users to see
           </Text>
+          <Text style={styles.text}>We're always looking for more ideas!</Text>
           <Text style={styles.text}>
-            Be creative, but remember that this is a suggestion for everyone.{' '}
+            Be creative, but remember that you're writing a suggested activity
+            for <Text style={{fontStyle: 'italic'}}>everyone</Text> to see.{' '}
             {'\u263A'}
           </Text>
+          {/* TODO: show alert modal when you have suggested an activity */}
 
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.input]}
-              placeholder={'Your activity here'}
+              placeholder={'Your suggested activity here'}
               onChangeText={suggestion =>
                 this.setState({suggestionText: suggestion})
               }
               value={this.state.suggestionText}
+              multiline={true}
             />
             <TouchableOpacity
               onPress={() => {
                 console.log(this.state.suggestionText);
                 this.setState({suggestionText: ''});
-              }}>
-              <View
-                style={{
-                  backgroundColor: 'blue',
-                  flex: 1,
-                  borderRadius: 5,
-                  aspectRatio: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text>Ok</Text>
-              </View>
+              }}
+              style={styles.submitButton}>
+              <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
+                {/* TODO: make button disabled when nothing is entered */}
+                Submit Suggestion
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,7 +78,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   headerText: {
     fontSize: 30,
@@ -90,14 +88,28 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     fontWeight: '700',
-    flex: 1,
-    marginTop: 10,
+    flex: 2,
     backgroundColor: 'whitesmoke',
-    padding: 5,
+    padding: 10,
+    paddingTop: 15,
     borderRadius: 5,
+    width: '100%',
+    marginBottom: 20,
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: 200,
+    marginTop: 20,
+  },
+  submitButton: {
+    backgroundColor: 'cornflowerblue',
+    flex: 1,
+    width: '100%',
+    borderRadius: 5,
+    //   aspectRatio: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
