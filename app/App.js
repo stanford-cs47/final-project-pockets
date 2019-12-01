@@ -15,6 +15,7 @@ import ProfileScreen from './Screens/ProfileScreen';
 import WebActivityScreen from './Screens/WebActivityScreen';
 import HiddenActivitiesScreen from './Screens/HiddenActivitiesScreen';
 import SuggestActivityScreen from './Screens/SuggestActivityScreen';
+import CalendarScreen from './Screens/CalendarScreen';
 
 const styles = StyleSheet.create({
   header: {
@@ -31,11 +32,12 @@ const AppNavigator = createStackNavigator(
     Profile: ProfileScreen,
     HiddenActivities: HiddenActivitiesScreen,
     SuggestActivity: SuggestActivityScreen,
+    Calendar: CalendarScreen,
   },
   {
     defaultNavigationOptions: {
       headerStyle: styles.header,
-      headerTintColor: '#C34A76',
+      headerTintColor: '#202020',
     },
     cardShadowEnabled: false,
     mode: 'modal',

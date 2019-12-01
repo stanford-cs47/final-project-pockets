@@ -18,7 +18,7 @@ class ProfileScreen extends React.Component {
         <NavIcon
           onPress={() => navigation.goBack()}
           icon={require('../Images/Exit.png')}
-          color={navigation.getParam('color', '#000')}
+          color={'#202020'}
         />
       ),
     };
@@ -46,6 +46,10 @@ class ProfileScreen extends React.Component {
         text: 'Suggest an Activity',
       },
       {
+        action: () => navigation.navigate('Calendar', {navigation: navigation}),
+        text: 'Integrate Calendar',
+      },
+      {
         action: this.signOut,
         text: 'Log Out',
       },
@@ -58,7 +62,15 @@ class ProfileScreen extends React.Component {
           data={data}
           renderItem={({item}) => (
             <TouchableOpacity style={styles.container} onPress={item.action}>
-              <Text style={styles.text}>{item.text}</Text>
+              <Text
+                style={[
+                  styles.text,
+                  item.text === 'Log Out'
+                    ? {color: 'cornflowerblue'}
+                    : {color: '#202020'},
+                ]}>
+                {item.text}
+              </Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => item.text}
@@ -70,15 +82,21 @@ class ProfileScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
     width: '100%',
     height: 96,
-    justifyContent: 'center',
+    padding: 32,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   text: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
+  },
+  image: {
+    width: 24,
+    height: 24,
   },
 });
 

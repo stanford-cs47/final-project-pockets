@@ -9,6 +9,7 @@ class WebActivityScreen extends React.Component {
         <NavIcon
           onPress={() => navigation.navigate('Home')}
           icon={require('../Images/Exit.png')}
+          color={'#202020'}
         />
       ),
     };

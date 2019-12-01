@@ -51,7 +51,7 @@ class HiddenActivitiesScreen extends React.Component {
         <NavIcon
           onPress={() => navigation.goBack()}
           icon={require('../Images/Exit.png')}
-          color={'#000'}
+          color={'#202020'}
         />
       ),
     };
@@ -136,7 +136,7 @@ class HiddenActivitiesScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={{height: '100%'}}>
         {/* TODO: Modal for confirmation of re-adding and alert when you have */}
         <Text style={styles.headerText}>
           Select an activity to re-display in your home screen.
@@ -167,27 +167,21 @@ class HiddenActivitiesScreen extends React.Component {
 
 const styles = StyleSheet.create({
   headerText: {
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: '700',
-    marginBottom: 25,
-  },
-  container: {
-    // width: '100%',
-    // height: 96,
-    margin: '11%',
-    height: '100%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    padding: 32,
   },
   text: {
-    // textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
+    padding: 32,
   },
   blacklistItem: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 5,
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 8,
   },
 });
 
