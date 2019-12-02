@@ -8,9 +8,12 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  View,
+  Switch,
 } from 'react-native';
 
 import NavIcon from '../Components/NavIcon';
+import firestore from '../../firebase';
 
 class ProfileScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -25,9 +28,48 @@ class ProfileScreen extends React.Component {
     };
   };
 
+  state = {locationEnable: false};
+
   signOut = async () => {
     try {
       await firebase.auth().signOut();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  getLocationPref = async () => {
+    try {
+      const user = firebase.auth().currentUser;
+      const userDocRef = firestore.doc('users/' + user.uid);
+      const userInfo = await userDocRef.get();
+
+      if (userInfo.exists) {
+        let location = userInfo.data().location
+          ? userInfo.data().location
+          : false;
+
+        this.setState({locationEnable: location});
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  componentDidMount = () => {
+    this.getLocationPref();
+  };
+
+  toggleLocation = async e => {
+    try {
+      if (e === true) {
+        // geolocation.requestAuthorization();
+      }
+
+      const user = firebase.auth().currentUser;
+      const userDocRef = firestore.doc('users/' + user.uid);
+      userDocRef.set({location: e}, {merge: true});
+      this.setState({locationEnable: e});
     } catch (err) {
       console.log(err);
     }
@@ -49,6 +91,10 @@ class ProfileScreen extends React.Component {
       {
         action: () => navigation.navigate('Calendar', {navigation: navigation}),
         text: 'Integrate Calendar',
+      },
+      {
+        action: () => '',
+        text: 'Location',
       },
       {
         action: () => {
@@ -80,7 +126,13 @@ class ProfileScreen extends React.Component {
         <FlatList
           data={data}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.container} onPress={item.action}>
+            <TouchableOpacity
+              style={
+                item.text === 'Location'
+                  ? [styles.container, {justifyContent: 'space-between'}]
+                  : styles.container
+              }
+              onPress={item.action}>
               <Text
                 style={[
                   styles.text,
@@ -90,6 +142,14 @@ class ProfileScreen extends React.Component {
                 ]}>
                 {item.text}
               </Text>
+              {item.text === 'Location' && (
+                <Switch
+                  onValueChange={e => {
+                    this.toggleLocation(e);
+                  }}
+                  value={this.state.locationEnable}
+                />
+              )}
             </TouchableOpacity>
           )}
           keyExtractor={item => item.text}

@@ -96,7 +96,7 @@ class App extends React.Component {
             containerStyle={{
               padding: 16,
               flexDirection: 'row',
-              backgroundColor: '#202020',
+              backgroundColor: 'cornflowerblue',
             }}
             contentContainerStyle={{
               flex: 1,
