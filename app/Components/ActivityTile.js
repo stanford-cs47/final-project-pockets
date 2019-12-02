@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: '5%',
   },
   tileTitle: {
     width: '80%',
@@ -78,10 +79,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   tileImage: {
-    width: 60,
-    height: 60,
+    width: '45%',
+    height: '45%',
     resizeMode: 'contain',
-    marginBottom: 20,
+    marginBottom: '10%',
   },
   deleteTouchable: {
     position: 'absolute',
