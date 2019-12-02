@@ -11,6 +11,13 @@ import {
   View,
   Switch,
 } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+
+Geolocation.setRNConfiguration({
+  skipPermissionRequests: true,
+  authorizationLevel: 'whenInUse',
+});
+// Geolocation.getCurrentPosition(info => console.log(info));
 
 import NavIcon from '../Components/NavIcon';
 import firestore from '../../firebase';
@@ -63,7 +70,7 @@ class ProfileScreen extends React.Component {
   toggleLocation = async e => {
     try {
       if (e === true) {
-        // geolocation.requestAuthorization();
+        Geolocation.requestAuthorization();
       }
 
       const user = firebase.auth().currentUser;
