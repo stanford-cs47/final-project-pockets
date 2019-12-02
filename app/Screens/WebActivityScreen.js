@@ -21,7 +21,15 @@ class WebActivityScreen extends React.Component {
       JSON.stringify(navigation.getParam('activity', {})),
     );
     console.log('checking out a web activity', activity);
-    return <WebView source={{uri: activity.link}} />;
+    return (
+      <WebView
+        source={
+          Array.isArray(activity.link)
+            ? {uri: activity.link[0]}
+            : {uri: activity.link}
+        }
+      />
+    );
   }
 }
 
