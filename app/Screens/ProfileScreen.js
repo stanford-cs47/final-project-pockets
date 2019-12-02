@@ -8,7 +8,6 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  View,
   Switch,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
@@ -159,13 +158,7 @@ class ProfileScreen extends React.Component {
         <FlatList
           data={data}
           renderItem={({item}) => (
-            <TouchableOpacity
-              style={
-                item.text === 'Location'
-                  ? [styles.container, {justifyContent: 'space-between'}]
-                  : styles.container
-              }
-              onPress={item.action}>
+            <TouchableOpacity style={styles.container} onPress={item.action}>
               <Text
                 style={[
                   styles.text,
