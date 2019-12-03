@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {material} from 'react-native-typography';
 import firestore from '../../firebase';
@@ -93,87 +94,92 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{height: '100%'}}>
-        <View style={styles.container}>
-          <Image
-            style={{width: 200, height: 200}}
-            source={require('../Images/Logo.png')}
-          />
-        </View>
-        <Text style={styles.headerText}>
-          {this.state.newUser
-            ? 'New Pockets Account'
-            : 'Welcome Back to Pockets'}
-        </Text>
-        {this.state.newUser && (
-          <>
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              value={this.state.signUpName}
-              onChangeText={signUpName => this.setState({signUpName})}
-              placeholder="Name"
+        <KeyboardAvoidingView
+          style={{height: '100%'}}
+          behavior="position"
+          enabled>
+          <View style={styles.container}>
+            <Image
+              style={{width: 200, height: 200}}
+              source={require('../Images/Logo.png')}
             />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              value={this.state.signUpEmail}
-              onChangeText={signUpEmail => this.setState({signUpEmail})}
-              placeholder="Email"
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              value={this.state.signUpPassword}
-              secureTextEntry={true}
-              onChangeText={signUpPassword => this.setState({signUpPassword})}
-              placeholder="Password"
-            />
-            <TouchableOpacity
-              onPress={() => this.signUp()}
-              style={styles.button}>
-              <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({newUser: false})}>
-              <Text style={styles.textButton}>Already have an account?</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {!this.state.newUser && (
-          <>
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={[styles.input, {marginTop: 50}]}
-              value={this.state.loginEmail}
-              onChangeText={loginEmail => this.setState({loginEmail})}
-              placeholder="Email"
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              value={this.state.loginPassword}
-              secureTextEntry={true}
-              onChangeText={loginPassword => this.setState({loginPassword})}
-              placeholder="Password"
-            />
-            <TouchableOpacity
-              onPress={() => this.login()}
-              style={styles.button}>
-              <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
-                Log In
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({newUser: true})}>
-              <Text style={styles.textButton}>New to Pockets?</Text>
-            </TouchableOpacity>
-          </>
-        )}
+          </View>
+          <Text style={styles.headerText}>
+            {this.state.newUser
+              ? 'New Pockets Account'
+              : 'Welcome Back to Pockets'}
+          </Text>
+          {this.state.newUser && (
+            <>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                value={this.state.signUpName}
+                onChangeText={signUpName => this.setState({signUpName})}
+                placeholder="Name"
+              />
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                value={this.state.signUpEmail}
+                onChangeText={signUpEmail => this.setState({signUpEmail})}
+                placeholder="Email"
+              />
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                value={this.state.signUpPassword}
+                secureTextEntry={true}
+                onChangeText={signUpPassword => this.setState({signUpPassword})}
+                placeholder="Password"
+              />
+              <TouchableOpacity
+                onPress={() => this.signUp()}
+                style={styles.button}>
+                <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({newUser: false})}>
+                <Text style={styles.textButton}>Already have an account?</Text>
+              </TouchableOpacity>
+            </>
+          )}
+          {!this.state.newUser && (
+            <>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={[styles.input, {marginTop: 50}]}
+                value={this.state.loginEmail}
+                onChangeText={loginEmail => this.setState({loginEmail})}
+                placeholder="Email"
+              />
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                value={this.state.loginPassword}
+                secureTextEntry={true}
+                onChangeText={loginPassword => this.setState({loginPassword})}
+                placeholder="Password"
+              />
+              <TouchableOpacity
+                onPress={() => this.login()}
+                style={styles.button}>
+                <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
+                  Log In
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({newUser: true})}>
+                <Text style={styles.textButton}>New to Pockets?</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
