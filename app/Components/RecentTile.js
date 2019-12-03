@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
   },
   tileImage: {
     position: 'absolute',
-    left: 24,
-    width: 60,
-    height: 60,
+    left: '10%',
+    height: '55%',
+    aspectRatio: 1,
     resizeMode: 'contain',
     marginBottom: 20,
   },
