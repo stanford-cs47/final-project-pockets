@@ -34,7 +34,8 @@ class DetailScreen extends React.Component {
     };
   };
 
-  doActivity = (activity, navigation) => {
+  doActivity = async (activity, navigation) => {
+    // TODO make this try catch async?
     const user = firebase.auth().currentUser;
     var userDocRef = firestore.doc('users/' + user.uid);
     userDocRef.set({currActivity: activity}, {merge: true});
@@ -42,7 +43,22 @@ class DetailScreen extends React.Component {
     if (activity.link != null) {
       // open page with link
       navigation.navigate('WebActivity', {activity: activity});
-      // TODO: make it navigate back to home when they back out of the webview
+      if (Array.isArray(activity.link)) {
+        var indexRef = firestore
+          .collection('users/' + user.uid + '/activityIndex/')
+          .doc(activity.id);
+
+        let currIndex = await indexRef.get();
+
+        if (currIndex.exists && !isNaN(currIndex.data().index)) {
+          await indexRef.set({
+            index: (currIndex.data().index + 1) % activity.link.length,
+          });
+        } else {
+          console.log('no index rn');
+          await indexRef.set({index: 0});
+        }
+      }
     } else {
       DropDownHolder.dropDown.alertWithType(
         'custom',
@@ -88,7 +104,6 @@ class DetailScreen extends React.Component {
 
     // const [modalOpen, setModalOpen] = React.useState(false);
 
-    // TODO: error handling if there is no object passed through for an activity
     const activity = JSON.parse(
       JSON.stringify(navigation.getParam('activity', {})),
     );
@@ -111,6 +126,10 @@ class DetailScreen extends React.Component {
           // source={require('../Images/pocket.png')}
           style={styles.image}
         />
+
+        <Text style={[styles.descriptionText, {color: getColor(activity)}]}>
+          {activity.description}
+        </Text>
 
         <TouchableOpacity
           style={styles.button}
@@ -177,6 +196,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 20,
     fontWeight: '700',
+  },
+  descriptionText: {
+    fontSize: 20,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginRight: '10%',
+    marginLeft: '10%',
   },
   activityText: {
     fontSize: 30,

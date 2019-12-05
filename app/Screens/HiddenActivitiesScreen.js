@@ -104,6 +104,7 @@ class HiddenActivitiesScreen extends React.Component {
   };
 
   loadBlacklist = async () => {
+    // TODO: make this show a loading sign before new list is ready
     try {
       let blacklist = [];
       const user = firebase.auth().currentUser;
@@ -137,7 +138,6 @@ class HiddenActivitiesScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{height: '100%'}}>
-        {/* TODO: Modal for confirmation of re-adding and alert when you have */}
         <Text style={styles.headerText}>
           Select an activity to re-display in your home screen.
         </Text>

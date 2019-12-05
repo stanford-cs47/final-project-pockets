@@ -163,7 +163,7 @@ class HomeScreen extends React.Component {
     } catch (error) {
       console.log(error);
     }
-    return '';
+    return null;
   };
 
   renderRecentActivity = () => {

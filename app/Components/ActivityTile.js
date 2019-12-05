@@ -63,6 +63,7 @@ export default class Tile extends React.Component {
 const styles = StyleSheet.create({
   tileTouchable: {
     width: '44%',
+    // 28 for 3 cols
     marginTop: '2%',
   },
   tile: {
