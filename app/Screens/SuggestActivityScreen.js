@@ -10,7 +10,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 import NavIcon from '../Components/NavIcon';
 
@@ -74,30 +74,40 @@ class SuggestActivityScreen extends React.Component {
             />
             <TouchableOpacity
               onPress={() => {
-                console.log(this.state.suggestionText);
-                this.makeSuggestion();
-                this.setState({suggestionText: ''});
-                Alert.alert(
-                  'Submit Suggestion',
-                  'Are you sure you want to submit this suggestion?',
-                  [
-                    {
-                      text: 'Cancel',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'OK',
-                      onPress: () =>
-                        Alert.alert(
-                          'Thanks for your suggestion!',
-                          "We'll review it, and if it looks good we'll add it to everyone's activities.",
-                        ),
-                    },
-                  ],
-                  {cancelable: true},
-                );
+                if (this.state.suggestionText !== '') {
+                  console.log(this.state.suggestionText);
+                  this.makeSuggestion();
+                  this.setState({suggestionText: ''});
+                  Alert.alert(
+                    'Submit Suggestion',
+                    'Are you sure you want to submit this suggestion?',
+                    [
+                      {
+                        text: 'Cancel',
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'OK',
+                        onPress: () =>
+                          Alert.alert(
+                            'Thanks for your suggestion!',
+                            "We'll review it, and if it looks good we'll add it to everyone's activities.",
+                          ),
+                      },
+                    ],
+                    {cancelable: true},
+                  );
+                }
               }}
-              style={styles.submitButton}>
+              style={[
+                styles.submitButton,
+                {
+                  backgroundColor:
+                    this.state.suggestionText === ''
+                      ? '#bfd1f2'
+                      : 'cornflowerblue',
+                },
+              ]}>
               <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
                 {/* TODO: make button disabled when nothing is entered */}
                 Submit Suggestion
@@ -144,7 +154,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'cornflowerblue',
   },
 });
 
