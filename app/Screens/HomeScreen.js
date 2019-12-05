@@ -42,6 +42,7 @@ class HomeScreen extends React.Component {
     unsubscribeCurrAct: null,
     unsubscribeBlacklist: null,
     filter: [],
+    location: false,
   };
 
   componentDidMount() {
@@ -95,11 +96,22 @@ class HomeScreen extends React.Component {
 
       if (userInfo.exists) {
         blacklist = userInfo.data().blacklist ? userInfo.data().blacklist : [];
+        await this.setState({
+          location: userInfo.data().location ? userInfo.data().location : false,
+        });
       }
 
       let filtered = activities.filter(function(e) {
         return this.indexOf(e.id) < 0;
       }, blacklist);
+
+      filtered = filtered.filter(function(e) {
+        if (this.state.location) {
+          return e;
+        } else {
+          return e.type !== 'locations';
+        }
+      }, this);
 
       return filtered ? filtered : [];
     } catch (error) {
@@ -237,26 +249,30 @@ class HomeScreen extends React.Component {
               <Text style={[styles.text, {color: '#C34A76'}]}>Learning</Text>
             </TouchableOpacity>
           </View>
-          <View style={{flex: 1}} opacity={this.filterOpacity('locations')}>
-            <TouchableOpacity
-              style={[styles.filter, {backgroundColor: '#DBB1E2'}]}
-              onPress={() => this.updateFilter('locations')}>
-              <Text style={[styles.text, {color: '#772485'}]}>Locations</Text>
-            </TouchableOpacity>
-          </View>
+          {this.state.location && (
+            <View style={{flex: 1}} opacity={this.filterOpacity('locations')}>
+              <TouchableOpacity
+                style={[styles.filter, {backgroundColor: '#DBB1E2'}]}
+                onPress={() => this.updateFilter('locations')}>
+                <Text style={[styles.text, {color: '#772485'}]}>Locations</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         <FlatList
           data={data}
           numColumns={2}
           columnWrapperStyle={styles.column}
           ListHeaderComponent={this.renderRecentActivity}
-          renderItem={({item}) => (
-            <Tile
-              navigation={this.props.navigation}
-              activity={item}
-              blacklistActivity={this.blacklistActivity}
-            />
-          )}
+          renderItem={({item}) => {
+            return (
+              <Tile
+                navigation={this.props.navigation}
+                activity={item}
+                blacklistActivity={this.blacklistActivity}
+              />
+            );
+          }}
           keyExtractor={item => item.id}
         />
       </SafeAreaView>

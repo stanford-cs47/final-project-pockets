@@ -39,7 +39,7 @@ check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
   });
 
 Geolocation.setRNConfiguration({
-  skipPermissionRequests: true,
+  // skipPermissionRequests: true,
   authorizationLevel: 'whenInUse',
 });
 // Geolocation.getCurrentPosition(info => console.log(info));
@@ -60,7 +60,7 @@ class ProfileScreen extends React.Component {
     };
   };
 
-  state = {locationEnable: false};
+  state = {locationEnable: false, name: ''};
 
   signOut = async () => {
     try {
@@ -81,7 +81,7 @@ class ProfileScreen extends React.Component {
           ? userInfo.data().location
           : false;
 
-        this.setState({locationEnable: location});
+        this.setState({locationEnable: location, name: userInfo.data().name});
       }
     } catch (err) {
       console.log(err);
@@ -155,6 +155,9 @@ class ProfileScreen extends React.Component {
     return (
       <SafeAreaView>
         {/* TODO: have a "Hi, username" at the top or something equivalent */}
+        <Text style={[styles.text, {fontSize: 30}]}>
+          Hello, {this.state.name}!
+        </Text>
         <FlatList
           data={data}
           renderItem={({item}) => (
@@ -171,7 +174,42 @@ class ProfileScreen extends React.Component {
               {item.text === 'Location' && (
                 <Switch
                   onValueChange={e => {
-                    this.toggleLocation(e);
+                    if (e === false) {
+                      Alert.alert(
+                        'Are you sure you want to turn location off?',
+                        '',
+                        [
+                          {
+                            text: 'Cancel',
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'Ok',
+                            onPress: () => {
+                              this.toggleLocation(e);
+                            },
+                          },
+                        ],
+                        {cancelable: true},
+                      );
+                    } else {
+                      Alert.alert(
+                        'Allow "Pockets" to access your location?',
+                        'Turn on location services to find things to do near you.',
+                        [
+                          {
+                            text: "Don't Allow",
+                          },
+                          {
+                            text: 'Allow',
+                            onPress: () => {
+                              this.toggleLocation(e);
+                            },
+                          },
+                        ],
+                        {cancelable: true},
+                      );
+                    }
                   }}
                   value={this.state.locationEnable}
                 />
