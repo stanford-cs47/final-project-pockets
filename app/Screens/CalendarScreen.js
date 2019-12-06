@@ -107,7 +107,7 @@ class CalendarScreen extends React.Component {
           Integrate your calendar and receive notifications when you have
           pockets of time
         </Text>
-        {this.state.status === 'undetermined' && (
+        {this.state.status !== 'authorized' && (
           <TouchableOpacity
             onPress={() => {
               RNCalendarEvents.authorizeEventStore();
