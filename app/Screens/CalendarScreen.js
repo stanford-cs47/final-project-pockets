@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   FlatList,
   Switch,
+  Alert,
 } from 'react-native';
 
 import NavIcon from '../Components/NavIcon';
@@ -32,6 +33,7 @@ class CalendarScreen extends React.Component {
   state = {
     status: 'undetermined',
     notifications: false,
+    pressed: false,
   };
 
   componentDidMount() {
@@ -73,20 +75,59 @@ class CalendarScreen extends React.Component {
   render() {
     const data = [
       {
-        action: () => {},
+        action: () => {
+          console.log('Disconnect');
+          Alert.alert(
+            'Disconnect Calendar',
+            'Are you sure you want to disconnect your calendar?',
+            [
+              {text: 'Cancel'},
+              {
+                text: 'Yes',
+                onPress: () => {
+                  this.setState({status: 'undetermined'});
+                },
+              },
+            ],
+            {cancelable: true},
+          );
+        },
         text: 'Notifications',
+      },
+      {
+        action: () => {},
+        text: 'Disconnect Calendar',
       },
     ];
 
     return (
       <SafeAreaView style={{height: '100%'}}>
-        <Text style={styles.headerText}>Integrate your Calendar</Text>
+        <Text style={styles.headerText}>Calendar and Notifications</Text>
         <Text style={styles.subtext}>
-          Receive notifications when you've got pockets of time
+          Integrate your calendar and receive notifications when you have
+          pockets of time
         </Text>
         {this.state.status === 'undetermined' && (
           <TouchableOpacity
-            onPress={() => RNCalendarEvents.authorizeEventStore()}
+            onPress={() => {
+              RNCalendarEvents.authorizeEventStore();
+              Alert.alert(
+                '"Pockets" Would Like to Access Your Calendar',
+                'Allow Pockets to access your calendar to notify you when you have pockets of time',
+                [
+                  {
+                    text: "Don't Allow",
+                  },
+                  {
+                    text: 'Allow',
+                    onPress: () => {
+                      this.setState({status: 'authorized'});
+                    },
+                  },
+                ],
+                {cancelable: true},
+              );
+            }}
             style={styles.button}>
             <Text style={{fontWeight: '700', color: 'white', fontSize: 20}}>
               Integrate Calendar
@@ -97,11 +138,35 @@ class CalendarScreen extends React.Component {
           <FlatList
             data={data}
             renderItem={({item}) => (
-              <TouchableOpacity style={styles.container} onPress={item.action}>
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() => {
+                  if (item.text === 'Disconnect Calendar') {
+                    console.log('Disconnect');
+                    Alert.alert(
+                      'Disconnect Calendar',
+                      'Are you sure you want to disconnect your calendar?',
+                      [
+                        {text: 'Cancel'},
+                        {
+                          text: 'Yes',
+                          onPress: () => {
+                            this.setState({status: 'undetermined'});
+                            DropDownHolder.dropDown.alertWithType(
+                              'custom',
+                              'Calendar disconnected',
+                            );
+                          },
+                        },
+                      ],
+                      {cancelable: true},
+                    );
+                  }
+                }}>
                 <Text
                   style={[
                     styles.text,
-                    item.text === 'Log Out'
+                    item.text === 'Disconnect Calendar'
                       ? {color: 'cornflowerblue'}
                       : {color: '#202020'},
                   ]}>

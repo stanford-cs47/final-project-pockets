@@ -111,7 +111,7 @@ class ProfileScreen extends React.Component {
       },
       {
         action: () => navigation.navigate('Calendar', {navigation: navigation}),
-        text: 'Integrate Calendar',
+        text: 'Calendar & Notifications',
       },
       {
         action: () => '',

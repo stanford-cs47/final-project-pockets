@@ -99,7 +99,6 @@ export default class LoginScreen extends React.Component {
     }
   };
 
-  // TODO: give error messages for login
   render() {
     return (
       <SafeAreaView style={{height: '100%'}}>
