@@ -21,7 +21,12 @@ export default class Tile extends React.Component {
             </Text>
           </View>
           <View style={styles.tileRow}>
-            <Text style={[styles.tileTitle, {color: getColor(activity)}]}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.tileTitle,
+                {color: getColor(activity), width: '50%', marginLeft: '35%'},
+              ]}>
               {activity.title}
             </Text>
           </View>
