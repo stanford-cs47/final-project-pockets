@@ -143,7 +143,11 @@ class ProfileScreen extends React.Component {
 
     return (
       <SafeAreaView>
-        <Text style={[styles.text, {fontSize: 30}]}>
+        <Text
+          style={[
+            styles.text,
+            {fontSize: 30, marginBottom: 32, marginTop: 32},
+          ]}>
           Hello, {this.state.name}!
         </Text>
         <FlatList

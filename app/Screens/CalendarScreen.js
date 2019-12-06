@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 
 import NavIcon from '../Components/NavIcon';
+import DropDownHolder from '../Components/DropdownHolder';
 
 class CalendarScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -110,6 +111,17 @@ class CalendarScreen extends React.Component {
                   <Switch
                     onValueChange={e => {
                       this.toggleNotifications(e);
+                      if (e === true) {
+                        DropDownHolder.dropDown.alertWithType(
+                          'custom',
+                          'Notifications enabled',
+                        );
+                      } else {
+                        DropDownHolder.dropDown.alertWithType(
+                          'custom',
+                          'Notifications disabled',
+                        );
+                      }
                     }}
                     value={this.state.notifications}
                   />
