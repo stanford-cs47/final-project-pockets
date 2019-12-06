@@ -194,6 +194,12 @@ class HomeScreen extends React.Component {
   updateFilter = type => {
     let filters = this.state.filter;
 
+    if (!this.state.location) {
+      if (filters.includes('locations')) {
+        filters = filters.filter(f => f !== 'locations');
+      }
+    }
+
     if (filters.includes(type)) {
       filters = filters.filter(f => f !== type);
     } else {

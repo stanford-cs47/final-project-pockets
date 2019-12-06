@@ -10,7 +10,6 @@ import {
   FlatList,
   Switch,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
@@ -37,12 +36,6 @@ check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
   .catch(error => {
     console.log(error);
   });
-
-Geolocation.setRNConfiguration({
-  // skipPermissionRequests: true,
-  authorizationLevel: 'whenInUse',
-});
-// Geolocation.getCurrentPosition(info => console.log(info));
 
 import NavIcon from '../Components/NavIcon';
 import firestore from '../../firebase';
@@ -94,10 +87,6 @@ class ProfileScreen extends React.Component {
 
   toggleLocation = async e => {
     try {
-      if (e === true) {
-        Geolocation.requestAuthorization();
-      }
-
       const user = firebase.auth().currentUser;
       const userDocRef = firestore.doc('users/' + user.uid);
       userDocRef.set({location: e}, {merge: true});
@@ -154,7 +143,6 @@ class ProfileScreen extends React.Component {
 
     return (
       <SafeAreaView>
-        {/* TODO: have a "Hi, username" at the top or something equivalent */}
         <Text style={[styles.text, {fontSize: 30}]}>
           Hello, {this.state.name}!
         </Text>

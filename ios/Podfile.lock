@@ -188,8 +188,6 @@ PODS:
   - React-jsinspector (0.61.4)
   - react-native-calendar-events (1.7.3):
     - React
-  - react-native-geolocation (2.0.2):
-    - React
   - react-native-webview (7.5.1):
     - React
   - React-RCTActionSheet (0.61.4):
@@ -253,7 +251,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-calendar-events (from `../node_modules/react-native-calendar-events`)
-  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -309,8 +306,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-calendar-events:
     :path: "../node_modules/react-native-calendar-events"
-  react-native-geolocation:
-    :path: "../node_modules/@react-native-community/geolocation"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -359,7 +354,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8dfb73b987afa9324e4009bdce62a18ce23d983c
   React-jsinspector: d15478d0a8ada19864aa4d1cc1c697b41b3fa92f
   react-native-calendar-events: 2fe35a9294af05de0ed819d3a1b5dac048d2c010
-  react-native-geolocation: cbd9d6bd06bac411eed2671810f454d4908484a8
   react-native-webview: b7ad1323338cb52e370bb07d6141308953ff2440
   React-RCTActionSheet: 7369b7c85f99b6299491333affd9f01f5a130c22
   React-RCTAnimation: d07be15b2bd1d06d89417eb0343f98ffd2b099a7
@@ -375,6 +369,6 @@ SPEC CHECKSUMS:
   RNPermissions: 0558997f20848147d9b909eb7978a93fc2f4ae30
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: e7c7ee0c403a0f17f3cf990f9b43d5a61a368609
+PODFILE CHECKSUM: 8d6539a19a0014c366908573fcf68513dbdb82ca
 
 COCOAPODS: 1.8.4

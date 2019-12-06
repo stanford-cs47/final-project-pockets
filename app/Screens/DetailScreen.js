@@ -35,36 +35,39 @@ class DetailScreen extends React.Component {
   };
 
   doActivity = async (activity, navigation) => {
-    // TODO make this try catch async?
-    const user = firebase.auth().currentUser;
-    var userDocRef = firestore.doc('users/' + user.uid);
-    userDocRef.set({currActivity: activity}, {merge: true});
+    try {
+      const user = firebase.auth().currentUser;
+      var userDocRef = firestore.doc('users/' + user.uid);
+      userDocRef.set({currActivity: activity}, {merge: true});
 
-    if (activity.link != null) {
-      // open page with link
-      navigation.navigate('WebActivity', {activity: activity});
-      if (Array.isArray(activity.link)) {
-        var indexRef = firestore
-          .collection('users/' + user.uid + '/activityIndex/')
-          .doc(activity.id);
+      if (activity.link != null) {
+        // open page with link
+        navigation.navigate('WebActivity', {activity: activity});
+        if (Array.isArray(activity.link)) {
+          var indexRef = firestore
+            .collection('users/' + user.uid + '/activityIndex/')
+            .doc(activity.id);
 
-        let currIndex = await indexRef.get();
+          let currIndex = await indexRef.get();
 
-        if (currIndex.exists && !isNaN(currIndex.data().index)) {
-          await indexRef.set({
-            index: (currIndex.data().index + 1) % activity.link.length,
-          });
-        } else {
-          console.log('no index rn');
-          await indexRef.set({index: 0});
+          if (currIndex.exists && !isNaN(currIndex.data().index)) {
+            await indexRef.set({
+              index: (currIndex.data().index + 1) % activity.link.length,
+            });
+          } else {
+            console.log('no index rn');
+            await indexRef.set({index: 0});
+          }
         }
+      } else {
+        DropDownHolder.dropDown.alertWithType(
+          'custom',
+          `Activity selected: ${activity.title}`,
+        );
+        navigation.navigate('Home');
       }
-    } else {
-      DropDownHolder.dropDown.alertWithType(
-        'custom',
-        `Activity selected: ${activity.title}`,
-      );
-      navigation.navigate('Home');
+    } catch (e) {
+      console.log(e);
     }
   };
 

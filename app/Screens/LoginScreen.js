@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import {material} from 'react-native-typography';
 import firestore from '../../firebase';
@@ -46,6 +47,11 @@ export default class LoginScreen extends React.Component {
   // Check out this link to learn more about firebase.auth()
   // https://firebase.google.com/docs/reference/node/firebase.auth.Auth
   signUp = async () => {
+    if (this.state.signUpName === '') {
+      Alert.alert('Oh no!', 'You must enter a name to sign up');
+      return;
+    }
+
     try {
       const response = await firebase
         .auth()
@@ -70,7 +76,8 @@ export default class LoginScreen extends React.Component {
         // });
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
+      Alert.alert('Oh no!', err.message);
     }
   };
 
@@ -87,7 +94,8 @@ export default class LoginScreen extends React.Component {
           this.state.loginPassword,
         );
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
+      Alert.alert('Oh no!', err.message);
     }
   };
 

@@ -21,25 +21,29 @@ class WebActivityScreen extends React.Component {
 
   getIndex = async activity => {
     // TODO make this try catch async?
-    const user = firebase.auth().currentUser;
+    try {
+      const user = firebase.auth().currentUser;
 
-    if (activity.link != null) {
-      if (Array.isArray(activity.link)) {
-        var indexRef = firestore.doc(
-          'users/' + user.uid + '/activityIndex/' + activity.id,
-        );
+      if (activity.link != null) {
+        if (Array.isArray(activity.link)) {
+          var indexRef = firestore.doc(
+            'users/' + user.uid + '/activityIndex/' + activity.id,
+          );
 
-        let currIndex = await indexRef.get();
+          let currIndex = await indexRef.get();
 
-        if (currIndex.exists) {
-          this.setState({currIndex: currIndex.data().index});
-        } else {
-          this.setState({currIndex: 0});
+          if (currIndex.exists) {
+            this.setState({currIndex: currIndex.data().index});
+          } else {
+            this.setState({currIndex: 0});
+          }
         }
+      } else {
+        console.log('No link for this activity');
+        this.setState({currIndex: 0});
       }
-    } else {
-      console.log('No link for this activity');
-      this.setState({currIndex: 0});
+    } catch (e) {
+      console.log(e);
     }
   };
 
