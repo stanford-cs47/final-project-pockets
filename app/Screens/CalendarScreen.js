@@ -37,9 +37,6 @@ class CalendarScreen extends React.Component {
   };
 
   componentDidMount() {
-    RNCalendarEvents.authorizationStatus().then(status => {
-      this.setState({status: status});
-    });
     this.getNotificationPref();
   }
 
@@ -104,8 +101,9 @@ class CalendarScreen extends React.Component {
       <SafeAreaView style={{height: '100%'}}>
         <Text style={styles.headerText}>Calendar and Notifications</Text>
         <Text style={styles.subtext}>
-          Integrate your calendar and receive notifications when you have
-          pockets of time
+          {this.state.status !== 'authorized'
+            ? 'Integrate your calendar and receive notifications when you have pockets of time'
+            : 'Calendar connected. Turn notifications on or off.'}
         </Text>
         {this.state.status !== 'authorized' && (
           <TouchableOpacity
@@ -121,6 +119,10 @@ class CalendarScreen extends React.Component {
                   {
                     text: 'Allow',
                     onPress: () => {
+                      DropDownHolder.dropDown.alertWithType(
+                        'custom',
+                        'Calendar integrated',
+                      );
                       this.setState({status: 'authorized'});
                     },
                   },
